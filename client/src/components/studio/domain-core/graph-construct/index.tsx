@@ -140,6 +140,7 @@ export const GraphConstruct = () => {
     importSchemaLoading,
   } = state;
 
+
   const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } =
     useSchema();
   const getGraphCanvasContextValue = useCallback((contextValue: any) => {

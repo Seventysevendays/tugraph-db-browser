@@ -73,6 +73,7 @@ const ProjectCard = ({
       draft.isNodeEdgeObj = true;
     });
     onGetNodeEdgeStatistics(graphName).then(res => {
+
       if (res.success) {
         const isConstruct = !!(res.data.vertexLabels || res.data.edgeLabels)
         updateState(draft => {
