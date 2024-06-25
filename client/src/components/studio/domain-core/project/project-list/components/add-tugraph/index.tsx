@@ -24,7 +24,6 @@ import { generateNameWithHash } from '@/utils/common';
 import styles from './index.module.less';
 import { dbRecordsTranslator } from '@/translator';
 
-
 type Props = { open: boolean; onClose: () => void };
 const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
   const {
