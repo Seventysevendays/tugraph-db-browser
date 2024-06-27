@@ -276,7 +276,8 @@ export const GraphConstruct = () => {
         className={styles[`${PUBLIC_PERFIX_CLASS}-step`]}
       >
         <Steps.Step title="模型定义" />
-        <Steps.Step title="数据导入" />
+        {/* 暂时功能隐藏 */}
+        {/* <Steps.Step title="数据导入" /> */}
       </Steps>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight`]}>
         <Button
@@ -288,17 +289,19 @@ export const GraphConstruct = () => {
           前往图查询
         </Button>
         {currentStep === 0 ? (
-          <Button
-            disabled={isEmpty(data.edges) && isEmpty(data.nodes)}
-            type="primary"
-            onClick={() => {
-              setState(draft => {
-                draft.currentStep += 1;
-              });
-            }}
-          >
-            数据导入
-          </Button>
+          //TODO 暂时功能隐藏
+          // <Button
+          //   disabled={isEmpty(data.edges) && isEmpty(data.nodes)}
+          //   type="primary"
+          //   onClick={() => {
+          //     setState(draft => {
+          //       draft.currentStep += 1;
+          //     });
+          //   }}
+          // >
+          //   数据导入
+          // </Button>
+          null
         ) : (
           <Button
             onClick={() => {
