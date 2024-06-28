@@ -343,7 +343,6 @@ export const QueryResultFormatter = (
     };
   }
   let resultData = result.data;
-
   const responseData = formatMultipleResponse(resultData);
 
   const { edges, nodes } = responseData;
