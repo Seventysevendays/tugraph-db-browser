@@ -42,7 +42,7 @@ export const UserCenter: React.FC<Prop> = () => {
             // updateState(draft => {
             //   draft.isEditPassword = true;
             // });
-           window.location.hash = '/reset'
+            window.location.hash = '/reset';
           }}
         >
           修改密码

@@ -133,7 +133,6 @@ export const GraphConstruct = () => {
     importSchemaLoading,
   } = state;
 
-
   const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } =
     useSchema();
   const getGraphCanvasContextValue = useCallback((contextValue: any) => {
@@ -288,21 +287,19 @@ export const GraphConstruct = () => {
         >
           前往图查询
         </Button>
-        {currentStep === 0 ? (
-          //TODO 暂时功能隐藏
-          // <Button
-          //   disabled={isEmpty(data.edges) && isEmpty(data.nodes)}
-          //   type="primary"
-          //   onClick={() => {
-          //     setState(draft => {
-          //       draft.currentStep += 1;
-          //     });
-          //   }}
-          // >
-          //   数据导入
-          // </Button>
-          null
-        ) : (
+        {currentStep === 0 ? //TODO 暂时功能隐藏
+        // <Button
+        //   disabled={isEmpty(data.edges) && isEmpty(data.nodes)}
+        //   type="primary"
+        //   onClick={() => {
+        //     setState(draft => {
+        //       draft.currentStep += 1;
+        //     });
+        //   }}
+        // >
+        //   数据导入
+        // </Button>
+        null : (
           <Button
             onClick={() => {
               setState(draft => {
