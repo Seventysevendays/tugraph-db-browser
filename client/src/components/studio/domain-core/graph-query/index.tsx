@@ -22,7 +22,6 @@ import {
 } from 'antd';
 import { filter, find, isEmpty, join, map, uniqueId } from 'lodash';
 import { useCallback, useEffect, useRef } from 'react';
-import { history } from 'umi';
 import { useImmer } from 'use-immer';
 import IconFont from '../../components/icon-font';
 import { SplitPane } from '../../components/split-panle';
@@ -54,7 +53,7 @@ import styles from './index.module.less';
 const { Option } = Select;
 
 export const GraphQuery = () => {
-  const location = history.location;
+  const location = window.location;
   const editorRef = useRef<any>(null);
   const graphList = getLocalData('TUGRAPH_SUBGRAPH_LIST') as SubGraph[];
   const {
@@ -189,13 +188,13 @@ export const GraphQuery = () => {
       });
     }
   }, [activeTab]);
-  useEffect(() => {
-    if (history.location.hash) {
-      updateState(draft => {
-        draft.storedVisible = true;
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (location.hash) {
+  //     updateState(draft => {
+  //       draft.storedVisible = true;
+  //     });
+  //   }
+  // }, []);
   const onSplitPaneWidthChange = useCallback((size: number) => {
     updateState(draft => {
       draft.editorWidth = size;
@@ -267,12 +266,13 @@ export const GraphQuery = () => {
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerLeft`]}>
         <ArrowLeftOutlined
           onClick={() => {
-            window.location.hash = '/home';
+            location.hash = '/home';
           }}
         />
         <Select
           onChange={value => {
-            window.location.href = `${location.pathname}?graphName=${value}`;
+            location.hash = `/query?graphName=${value}`;
+            location.reload();
           }}
           defaultValue={currentGraphName}
           options={graphListOptions}
@@ -345,14 +345,14 @@ export const GraphQuery = () => {
         </Popover> */}
         <Button
           onClick={() => {
-            window.location.hash = `/construct?graphName=${currentGraphName}`;
+            location.hash = `/construct?graphName=${currentGraphName}`;
           }}
         >
           返回图构建
         </Button>
         <Button
           onClick={() => {
-            window.location.hash = `/analysis?graphName=${currentGraphName}`;
+            location.hash = `/analysis?graphName=${currentGraphName}`;
           }}
         >
           前往图分析
@@ -688,7 +688,7 @@ export const GraphQuery = () => {
           window.history.replaceState(
             null,
             null,
-            `${history.location.pathname + history.location.search}`,
+            `${location.pathname + location.search}`,
           );
           updateState(draft => {
             draft.storedVisible = false;

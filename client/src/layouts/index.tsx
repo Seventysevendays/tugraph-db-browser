@@ -2,7 +2,8 @@ import { addQueryParam } from '@/components/studio/utils/url';
 import routes from '@/config/routes';
 import { Col, Row } from 'antd';
 import React, { useEffect } from 'react';
-import { Outlet, history, useLocation } from 'umi';
+import { Outlet, useLocation } from 'umi';
+import { history } from '@/utils/history';
 import './global.less';
 import styles from './index.less';
 

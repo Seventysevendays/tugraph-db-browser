@@ -6,9 +6,11 @@ import {
 } from '@/constants';
 import { dbConfigRecordsTranslator } from '@/translator';
 import neo4j from 'neo4j-driver';
-import { history } from 'umi';
 import { isEmpty, forEach, map, find, merge } from 'lodash';
-import { IRoleRespons, IUserRespons } from '../../../server/app/service/tugraph/interface';
+import {
+  IRoleRespons,
+  IUserRespons,
+} from '../../../server/app/service/tugraph/interface';
 
 export const getLocalData = (key: string) => {
   if (!key) {
@@ -76,10 +78,9 @@ export const loginDB = async (params: {
   };
 };
 
-
 export const userInfoTranslator = (
   userList: IUserRespons[],
-  roleList: IRoleRespons[]
+  roleList: IRoleRespons[],
 ) => {
   if (isEmpty(userList)) {
     return [];
@@ -93,10 +94,10 @@ export const userInfoTranslator = (
     }
     let permissions = {};
 
-    forEach(user.user_info.roles, (roleName) => {
+    forEach(user.user_info.roles, roleName => {
       const targetPermissions = find(
         roleList,
-        (role: IRoleRespons) => role.role_name === roleName
+        (role: IRoleRespons) => role.role_name === roleName,
       )?.role_info?.permissions;
       if (!isEmpty(targetPermissions)) {
         merge(permissions, targetPermissions);
@@ -125,6 +126,3 @@ export const convertPermissions = (permissions: Record<string, string>) => {
   });
   return result;
 };
-
-
-

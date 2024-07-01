@@ -1,30 +1,27 @@
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Divider, Dropdown, Menu, Space, Tooltip, message } from 'antd';
 import { isEmpty } from 'lodash';
-import { history } from 'umi';
 import React from 'react';
 import { useImmer } from 'use-immer';
 import { useAuth } from '@/components/studio/hooks/useAuth';
 import { getLocalData, setLocalData } from '../utils/localStorage';
 import EditPasswordModal from './edit-password';
 import { USER_HELP_LINK } from '../constant';
+import { useModel } from 'umi';
+import { InitialState } from '@/app';
 
 type Prop = {};
 export const UserCenter: React.FC<Prop> = () => {
+  const { initialState } = useModel('@@initialState');
+  const { driver } = initialState as InitialState;
   const { onLogout } = useAuth();
   const [state, updateState] = useImmer<{ isEditPassword: boolean }>({
     isEditPassword: false,
   });
   const { isEditPassword } = state;
   const handleLogout = () => {
-    onLogout().then(res => {
-      if (res.errorCode == 200) {
-        setLocalData('TUGRAPH_TOKEN', '');
-       window.location.hash = '/login'
-      } else {
-        message.error('登出失败' + res.errorMessage);
-      }
-    });
+    driver.close();
+    window.location.hash = '/login';
   };
   const items = [
     {
@@ -35,7 +32,7 @@ export const UserCenter: React.FC<Prop> = () => {
             // updateState(draft => {
             //   draft.isEditPassword = true;
             // });
-           window.location.hash = '/reset'
+            window.location.hash = '/reset';
           }}
         >
           修改密码

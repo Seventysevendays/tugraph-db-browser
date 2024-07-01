@@ -2,7 +2,6 @@ import { ClockCircleFilled } from '@ant-design/icons';
 import { Button, Result } from 'antd';
 import { ResultStatusType } from 'antd/lib/result';
 import React, { Dispatch, SetStateAction } from 'react';
-import { history } from 'umi';
 import { PUBLIC_PERFIX_CLASS } from '../../../constant';
 
 import styles from './index.module.less';
@@ -35,7 +34,7 @@ export const ImportDataResult: React.FC<Prop> = ({
         key="0"
         onClick={() => {
           importProgressCancel();
-          window.location.hash = `/query?graphName=${graphName}`
+          window.location.hash = `/query?graphName=${graphName}`;
         }}
       >
         前往图查询

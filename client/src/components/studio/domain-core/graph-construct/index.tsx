@@ -9,7 +9,6 @@ import type { UploadProps } from 'antd';
 import { Button, Checkbox, message, Modal, Select, Steps, Upload } from 'antd';
 import { filter, isEmpty, join } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-import { history } from 'umi';
 import { useImmer } from 'use-immer';
 import {
   GraphCanvas,
@@ -45,7 +44,7 @@ import styles from './index.module.less';
 import { addQueryParam } from '../../utils/url';
 
 export const GraphConstruct = () => {
-  const location = history.location;
+  const location = window.location;
   const [hoverType, setHoverType] = useState('');
   const graphList = getLocalData('TUGRAPH_SUBGRAPH_LIST') as SubGraph[];
   const { onImportGraphSchema, ImportGraphSchemaLoading } = useImport();
@@ -130,7 +129,6 @@ export const GraphConstruct = () => {
     schema,
     visible,
   } = state;
-
 
   const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } =
     useSchema();
@@ -254,12 +252,13 @@ export const GraphConstruct = () => {
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerLeft`]}>
         <ArrowLeftOutlined
           onClick={() => {
-            window.location.hash = '/home'
+            location.hash = '/home';
           }}
         />
         <Select
           onChange={value => {
-            window.location.href = `${location.pathname}?graphName=${value}`;
+            location.hash = `/construct?graphName=${value}`;
+            location.reload();
           }}
           defaultValue={currentGraphName}
           options={graphListOptions}
@@ -280,27 +279,24 @@ export const GraphConstruct = () => {
         <Button
           style={{ marginRight: '8px' }}
           onClick={() => {
-            window.location.hash = `/query?graphName=${currentGraphName}`
-      
+            window.location.hash = `/query?graphName=${currentGraphName}`;
           }}
         >
           前往图查询
         </Button>
-        {currentStep === 0 ? (
-          //TODO 暂时功能隐藏
-          // <Button
-          //   disabled={isEmpty(data.edges) && isEmpty(data.nodes)}
-          //   type="primary"
-          //   onClick={() => {
-          //     setState(draft => {
-          //       draft.currentStep += 1;
-          //     });
-          //   }}
-          // >
-          //   数据导入
-          // </Button>
-          null
-        ) : (
+        {currentStep === 0 ? //TODO 暂时功能隐藏
+        // <Button
+        //   disabled={isEmpty(data.edges) && isEmpty(data.nodes)}
+        //   type="primary"
+        //   onClick={() => {
+        //     setState(draft => {
+        //       draft.currentStep += 1;
+        //     });
+        //   }}
+        // >
+        //   数据导入
+        // </Button>
+        null : (
           <Button
             onClick={() => {
               setState(draft => {

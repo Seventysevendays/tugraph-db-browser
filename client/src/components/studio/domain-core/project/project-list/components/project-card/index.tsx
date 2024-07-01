@@ -7,7 +7,6 @@ import { PUBLIC_PERFIX_CLASS, TUGRAPH_DEOM } from '../../../../../constant';
 import { useGraph } from '../../../../../hooks/useGraph';
 import AddTuGraphModal from '../add-tugraph';
 import EditTuGraphMoadl from '../edit-tugraph';
-
 import styles from './index.module.less';
 
 interface CardProps {
@@ -48,7 +47,6 @@ const ProjectCard = ({
         onClick={() => {
           if (status) {
             window.location.hash = href || ''
-           
           }
         }}
         className={

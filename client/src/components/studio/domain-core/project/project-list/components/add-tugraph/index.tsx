@@ -105,16 +105,16 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                 onCreateGraph({
                   graphName,
                   config: { description, maxSizeGB },
-                })
-                  .then(() => {
+                }).then(res => {
+                  if (res.success) {
                     message.success('新建成功');
                     onGetGraphList();
                     form.resetFields();
                     onClose();
-                  })
-                  .catch(e => {
-                    message.error('创建失败' + e);
-                  });
+                  } else {
+                    message.error('创建失败' + res?.errorMessage);
+                  }
+                });
               } else {
                 onCreateDemoGraph({
                   graphName,
@@ -127,7 +127,6 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                     });
 
                     onImportProgress(res.data.taskId).then(res => {
-                 
                       if (res.errorCode == 200) {
                         if (res.data.state === '2') {
                           message.success('模版创建成功');

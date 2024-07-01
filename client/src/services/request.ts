@@ -6,6 +6,10 @@ export const request = async (
   cypher: string,
   graphName = 'default',
 ) => {
+  if (!cypher) {
+    return {};
+  }
+
   const session = driver.session({
     database: graphName,
   });

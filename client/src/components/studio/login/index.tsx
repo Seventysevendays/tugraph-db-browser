@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import type { Engine } from 'tsparticles-engine';
-import { history, useModel } from 'umi';
+import { useModel } from 'umi';
 import { PUBLIC_PERFIX_CLASS } from '../constant';
 import { getLocalData } from '../utils/localStorage';
 import particlesOptions from './particles-config';
@@ -31,7 +31,7 @@ export const Login = () => {
     if (values) {
       try {
         const { uri, userName, password } = values;
-        const { session, dbConfig,driver } = await loginDB({
+        const { session, dbConfig, driver } = await loginDB({
           uri,
           userName,
           password,
@@ -46,8 +46,8 @@ export const Login = () => {
           dbConfig,
         } as any);
         setTimeout(() => {
-          window.location.hash = '/home'
-        },100);
+          window.location.hash = '/home';
+        }, 100);
       } catch (error: any) {
         message.error(error ? error : '登录失败！');
       }
@@ -56,7 +56,7 @@ export const Login = () => {
 
   if (localStorage.getItem('TUGRAPH_TOKEN')) {
     // 已经登录过，则跳转到首页
-    window.location.hash = '/home'
+    window.location.hash = '/home';
     return;
   }
   return (
