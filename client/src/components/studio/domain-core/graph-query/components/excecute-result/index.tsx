@@ -649,11 +649,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
   // 表格
   const renderJSONTable = () => {
     if (isEmpty(originalData)) {
-      return (
-        <pre style={{ whiteSpace: 'break-spaces' }}>
-          {JSONBig.stringify(omit(excecuteResult, 'id'), null, 2)}
-        </pre>
-      );
+      return <Empty description="no records" image={Empty.PRESENTED_IMAGE_SIMPLE} />
     }
     const keys = Object.keys(originalData?.[0]);
     const columns = keys.map(item => {
