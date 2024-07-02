@@ -39,11 +39,6 @@ export const convertIntToNumber = (data: any) => {
 };
 
 export const dbRecordsTranslator = (result: QueryResult<RecordShape>) => {
-  if(!result?.records?.length){
-    return {
-      data:[]
-    }
-  }
   return {
     data: result?.records?.map(record => {
       const { _fields: fields, keys } = record;

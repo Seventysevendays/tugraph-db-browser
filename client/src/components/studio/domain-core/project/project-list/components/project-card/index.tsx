@@ -68,7 +68,6 @@ const ProjectCard = ({
       draft.isNodeEdgeObj = true;
     });
     onGetNodeEdgeStatistics(graphName).then(res => {
-
       if (res.success) {
         const isConstruct = !!(res.data.vertexLabels || res.data.edgeLabels)
         updateState(draft => {
@@ -86,7 +85,6 @@ const ProjectCard = ({
   useEffect(()=>{
     nodeEdgeStatistics(graphName)
   },[])
-
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-box`]}>
       {index === 0 ? (
