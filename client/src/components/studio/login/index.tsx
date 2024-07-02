@@ -17,7 +17,7 @@ const { Item, useForm } = Form;
 
 export const Login = () => {
   const [form] = useForm();
-  const { setInitialState } = useModel('@@initialState');
+  const { initialState, setInitialState } = useModel('@@initialState');
   const userName = getLocalData(TUGRAPH_USER_NAME);
   const password = getLocalData(TUGRAPH_PASSWORD);
   const uri = getLocalData(TUGRAPH_URI);
@@ -54,11 +54,12 @@ export const Login = () => {
     }
   };
 
-  if (localStorage.getItem('TUGRAPH_TOKEN')) {
-    // 已经登录过，则跳转到首页
+  /** 判断是否已经登录，若登录则跳转至首页 */
+  if (initialState?.userInfo?.userName) {
     window.location.hash = '/home';
     return;
   }
+  
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-login-container`]}>
       <img

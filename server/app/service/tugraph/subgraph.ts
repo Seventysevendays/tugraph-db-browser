@@ -51,14 +51,13 @@ class TuGraphSubGraphService extends Service {
   async createSubGraphFromTemplate(params: ISubGraphTemplateParams) {
     const { graphName, config, description } = params;
     const { schema, files } = description;
-    
+
     // 2. 创建schema
     const createSchemaResult =
       await this.ctx.service.tugraph.schema.importSchema({
         graph: graphName,
         schema,
         override: false,
-
       });
 
     if (!createSchemaResult.success) {
