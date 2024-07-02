@@ -5,7 +5,9 @@ import {
   alterLabelDelFields,
   alterLabelModFields,
   createEdge,
+  createEdgeLabelByJson,
   createVertex,
+  createVertexLabelByJson,
   deleteIndex,
   deleteLabel,
   dropDB,
@@ -28,6 +30,7 @@ import {
   IIndexParams,
   ISchemaParams,
   IUpdateSchemaParams,
+  Schema,
 } from './interface';
 import { DATA_TYPE } from './constant';
 import { importGraphSchema } from '@/components/studio/services/ImportController';
@@ -84,7 +87,7 @@ export const getNodeEdgeStatistics = async (
   const { data: labelData, success, code } = schemaResult;
   const { vertexLabels, edgeLabels } = labelData;
   const { data } = result;
-  console.log(result,)
+  console.log(result);
   const vertexCount =
     data?.find((item: any) => item['type'] === 'vertex')['number'] || 0;
   const edgeCount =
@@ -502,9 +505,36 @@ export const deleteIndexSchema = async (
 };
 
 /* 导入schema */
-export const importSchema = async (driver: Driver, params: ISchemaParams) => {
-  const { graph, schema, override = false } = params;
-  const cypher = '';
-  const result = await request(driver, cypher);
-  return responseFormatter(result);
+export const importSchema = async (
+  driver: Driver,
+  Schema: Schema[],
+  graphName: string,
+) => {
+  try {
+    const cypherEdgeList: any = [];
+    const cypherVertexList: any = [];
+    Schema?.forEach(item => {
+      if (item?.type === 'VERTEX') {
+        cypherVertexList.push(createVertexLabelByJson(JSON.stringify(item)));
+      } else if (item?.type === 'EDGE') {
+        cypherEdgeList.push(createEdgeLabelByJson(JSON.stringify(item)));
+      }
+    });
+    const createSchemaPromise = [...cypherVertexList, ...cypherEdgeList].map(
+      async cypher => {
+        return await request(driver, cypher, graphName);
+      },
+    );
+    const result = await Promise.all(createSchemaPromise);
+    const error = result?.find(d => !d?.success);
+
+    if (error) {
+      return error;
+    }
+    return { success: true };
+  } catch (error) {
+    return error;
+  }
 };
+
+

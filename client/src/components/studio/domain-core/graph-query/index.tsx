@@ -310,8 +310,7 @@ export const GraphQuery = () => {
             }}
           />
         </Tooltip>
-        {/* TODO 暂时隐藏功能 */}
-        {/* <Popover
+        <Popover
           title="存储过程"
           placement="bottomRight"
           className="popoverTitle"
@@ -337,19 +336,19 @@ export const GraphQuery = () => {
             alt=""
             style={{ width: 24, height: 24 }}
             onClick={() => {
-              window.history.replaceState(
-                null,
-                null,
-                `${
-                  history.location.pathname + history.location.search
-                }#procedure`,
-              );
+              // window.history.replaceState(
+              //   null,
+              //   null,
+              //   `${
+              //     history.location.pathname + history.location.search
+              //   }#procedure`,
+              // );
               updateState(draft => {
                 draft.storedVisible = true;
               });
             }}
           />
-        </Popover> */}
+        </Popover>
         <Button
           onClick={() => {
             location.hash = `/construct?graphName=${currentGraphName}`;
@@ -699,11 +698,11 @@ export const GraphQuery = () => {
         visible={storedVisible}
         graphName={currentGraphName}
         onCancel={() => {
-          window.history.replaceState(
-            null,
-            null,
-            `${location.pathname + location.search}`,
-          );
+          // window.history.replaceState(
+          //   null,
+          //   null,
+          //   `${location.pathname + location.search}`,
+          // );
           updateState(draft => {
             draft.storedVisible = false;
           });
