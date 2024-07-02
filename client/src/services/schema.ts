@@ -84,6 +84,7 @@ export const getNodeEdgeStatistics = async (
   const { data: labelData, success, code } = schemaResult;
   const { vertexLabels, edgeLabels } = labelData;
   const { data } = result;
+  console.log(result,)
   const vertexCount =
     data?.find((item: any) => item['type'] === 'vertex')['number'] || 0;
   const edgeCount =

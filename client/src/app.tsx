@@ -40,20 +40,22 @@ export async function getInitialState() {
     let dbConfig: Record<string, any> = {};
     const config = await session
       .run('CALL dbms.config.list()')
-
       .catch(e => {
         console.log(e);
       });
     if (config) {
       dbConfig = dbConfigRecordsTranslator(config.records);
+      console.log(dbConfig,'lkmConfig')
       const retain_connection_credentials =
         dbConfig['browser.retain_connection_credentials'];
       if (retain_connection_credentials === 'false') {
         handleSessionClose();
       } else {
         setInterval(() => {
+
           const credential_timeout = dbConfig['browser.credential_timeout'];
           const latestLoginTime = getLocalData(TUGRPAH_USER_LOGIN_TIME);
+          console.log(credential_timeout,'lkmtime')
           const isExpired =
             latestLoginTime + credential_timeout * 1000 < new Date().getTime();
           if (isExpired) {

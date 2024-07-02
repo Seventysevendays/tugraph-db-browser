@@ -99,6 +99,7 @@ export const GraphQuery = () => {
     };
     editor: any;
     storedVisible: boolean;
+    lastResult: any;
   }>({
     graphListOptions: map(graphList, (graph: SubGraph) => {
       return {
@@ -119,6 +120,7 @@ export const GraphQuery = () => {
     graphData: { nodes: [], edges: [] },
     editor: {},
     storedVisible: false,
+    lastResult: {},
   });
   const {
     activeTab,
@@ -135,6 +137,7 @@ export const GraphQuery = () => {
     graphData,
     editor,
     storedVisible,
+    lastResult,
   } = state;
   const columns = [
     {
@@ -228,8 +231,10 @@ export const GraphQuery = () => {
         graphName: currentGraphName,
         script: editorRef?.current?.codeEditor?.getValue() || script,
       }).then(res => {
+        const id = uniqueId('id_');
         updateState(draft => {
-          draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
+          draft.resultData = [...resultData, { ...res, id }];
+          draft.lastResult = { ...lastResult, [IQUIRE_LIST[0].key]: id };
         });
       });
     }
@@ -240,9 +245,10 @@ export const GraphQuery = () => {
         limit,
         conditions,
       }).then(res => {
+        const id = uniqueId('id_');
         updateState(draft => {
-          draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
-          draft.script = res.script;
+          draft.resultData = [...resultData, { ...res, id }];
+          draft.lastResult = { ...lastResult, [IQUIRE_LIST[1].key]: id };
         });
       });
     }
@@ -253,9 +259,10 @@ export const GraphQuery = () => {
         conditions,
         nodes: queryParams,
       }).then(res => {
+        const id = uniqueId('id_');
         updateState(draft => {
-          draft.resultData = [...resultData, { ...res, id: uniqueId('id_') }];
-          draft.script = res.script;
+          draft.resultData = [...resultData, { ...res, id }];
+          draft.lastResult = { ...lastResult, [IQUIRE_LIST[2].key]: id };
         });
       });
     }
@@ -378,6 +385,7 @@ export const GraphQuery = () => {
               type="primary"
               onClick={handleQuery}
               loading={StatementQueryLoading}
+              disabled={!script}
               icon={
                 <IconFont
                   type="icon-zhihang"
@@ -603,10 +611,12 @@ export const GraphQuery = () => {
                   >
                     {resultData.length ? (
                       <ExcecuteResultPanle
+                        activeTabKey={activeTab}
                         queryResultList={resultData}
                         onResultClose={onResultClose}
                         graphData={graphData}
                         graphName={currentGraphName}
+                        lastResult={lastResult}
                       />
                     ) : (
                       <div
@@ -643,10 +653,12 @@ export const GraphQuery = () => {
               <div className={styles[`${PUBLIC_PERFIX_CLASS}-path-result`]}>
                 {resultData.length ? (
                   <ExcecuteResultPanle
+                    activeTabKey={activeTab}
                     graphData={graphData}
                     graphName={currentGraphName}
                     queryResultList={resultData}
                     onResultClose={onResultClose}
+                    lastResult={lastResult}
                   />
                 ) : (
                   <div className={styles[`${PUBLIC_PERFIX_CLASS}-path-spin`]}>
@@ -666,10 +678,12 @@ export const GraphQuery = () => {
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-node-result`]}>
             {resultData.length ? (
               <ExcecuteResultPanle
+                activeTabKey={activeTab}
                 graphData={graphData}
                 graphName={currentGraphName}
                 queryResultList={resultData}
                 onResultClose={onResultClose}
+                lastResult={lastResult}
               />
             ) : (
               <div className={styles[`${PUBLIC_PERFIX_CLASS}-node-spin`]}>

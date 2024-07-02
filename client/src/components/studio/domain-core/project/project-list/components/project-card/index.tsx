@@ -8,6 +8,7 @@ import { useGraph } from '../../../../../hooks/useGraph';
 import AddTuGraphModal from '../add-tugraph';
 import EditTuGraphMoadl from '../edit-tugraph';
 import styles from './index.module.less';
+import { useEffect } from 'react';
 
 interface CardProps {
   projectInfo: any;
@@ -33,20 +34,23 @@ const ProjectCard = ({
     isAdd: boolean;
     nodeEdgeObjList?: Array<{ text: string; value?: number }>;
     isNodeEdgeObj: boolean;
+    isConstruct: boolean;
   }>({
     drawerVisiable: false,
     isEdit: false,
     isAdd: false,
     nodeEdgeObjList: [],
     isNodeEdgeObj: false,
+    isConstruct: false,
   });
-  const { nodeEdgeObjList, isNodeEdgeObj } = state;
+  console.log(graphName,'lkm')
+  const { nodeEdgeObjList, isNodeEdgeObj,isConstruct } = state;
   const getActions = (text: string, status: boolean, href: string) => (
-    <Tooltip title={!status && '敬请期待'}>
+    <Tooltip title={!status && '请先图构建'}>
       <span
         onClick={() => {
           if (status) {
-            window.location.hash = href || ''
+            window.location.hash = href || '';
           }
         }}
         className={
@@ -65,8 +69,8 @@ const ProjectCard = ({
       draft.isNodeEdgeObj = true;
     });
     onGetNodeEdgeStatistics(graphName).then(res => {
-
       if (res.success) {
+        const isConstruct = !!(res.data.vertexLabels || res.data.edgeLabels)
         updateState(draft => {
           draft.nodeEdgeObjList = [
             { text: '类点', value: res.data.vertexLabels },
@@ -74,10 +78,14 @@ const ProjectCard = ({
             { text: '类边', value: res.data.edgeLabels },
             { text: '边', value: res.data.edgeCount },
           ];
+          draft.isConstruct = isConstruct
         });
       }
     });
   };
+  useEffect(()=>{
+    nodeEdgeStatistics(graphName)
+  },[])
   const isOfficial =
     TUGRAPH_DEOM.filter(item => item.graph_name === graphName).length > 0;
   return (
@@ -109,8 +117,8 @@ const ProjectCard = ({
               true,
               `${'/construct'}?graphName=${graphName}`,
             ),
-            getActions('图查询', true, `${'/query'}?graphName=${graphName}`),
-            getActions('图分析', true, `${'/analysis'}?graphName=${graphName}`),
+            getActions('图查询', isConstruct, `${'/query'}?graphName=${graphName}`),
+            getActions('图分析', isConstruct, `${'/analysis'}?graphName=${graphName}`),
           ]}
           bordered={false}
           hoverable
@@ -196,9 +204,11 @@ const ProjectCard = ({
                         okText="确定"
                         cancelText="取消"
                       >
-                        <DeleteOutlined
-                          style={{ color: `rgba(152, 152, 157, 1)` }}
-                        />
+                        <Tooltip title="删除">
+                          <DeleteOutlined
+                            style={{ color: `rgba(152, 152, 157, 1)` }}
+                          />
+                        </Tooltip>
                       </Popconfirm>
                     )}
                     <Tooltip title="编辑">
