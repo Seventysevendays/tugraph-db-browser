@@ -1,5 +1,5 @@
 import { CollasibleStep } from '../components/collapsable-steps';
-import movie_data from './demo-json/movie.json';
+import movie_data from '@/constants/demo_data/movie/import.json';
 import three_body_data from './demo-json/three_body.json';
 import three_kingdoms_data from './demo-json/three_kingdoms.json';
 import wandering_earth_data from './demo-json/wandering_earth.json';
@@ -39,16 +39,16 @@ export const GRAPH_OPERATE = [
     value: 'edge',
   },
   //功能暂时隐藏
-  // {
-  //   lable: '导入模型',
-  //   icon: 'icon-daorumoxingwenjian',
-  //   value: 'import',
-  // },
-  // {
-  //   lable: '导出模型',
-  //   icon: 'icon-daochumoxing',
-  //   value: 'export',
-  // },
+  {
+    lable: '导入模型',
+    icon: 'icon-daorumoxingwenjian',
+    value: 'import',
+  },
+  {
+    lable: '导出模型',
+    icon: 'icon-daochumoxing',
+    value: 'export',
+  },
 ];
 export enum EditType {
   SWITCH = 'SWITCH',
@@ -90,30 +90,30 @@ export const TUGRAPH_DEOM = [
     imgUrl:
       'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*vLs3RIMgT4UAAAAAAAAAAAAADgOBAQ/original',
   },
-  {
-    graph_demo_name: 'Three Kingdoms（三国）',
-    graph_name: 'ThreeKingdoms',
-    description: '基于三国时期的历史事件的示例。',
-    data: three_kingdoms_data,
-    imgUrl:
-      'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*ebTkRIJx4SwAAAAAAAAAAAAADgOBAQ/original',
-  },
-  {
-    graph_demo_name: 'The Three Body（三体）',
-    graph_name: 'TheThreeBody',
-    description: '基于刘慈欣的小说《三体》的故事背景示例。',
-    data: three_body_data,
-    imgUrl:
-      'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*UT-FQZ19zooAAAAAAAAAAAAADgOBAQ/original',
-  },
-  {
-    graph_demo_name: 'Wandering Earth（流浪地球）',
-    graph_name: 'WanderingEarth',
-    description: '基于电影《流浪地球1》、《流浪地球2》的剧情设计的示例。',
-    data: wandering_earth_data,
-    imgUrl:
-      'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*Yn1mSLYzQsgAAAAAAAAAAAAADgOBAQ/original',
-  },
+  // {
+  //   graph_demo_name: 'Three Kingdoms（三国）',
+  //   graph_name: 'ThreeKingdoms',
+  //   description: '基于三国时期的历史事件的示例。',
+  //   data: three_kingdoms_data,
+  //   imgUrl:
+  //     'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*ebTkRIJx4SwAAAAAAAAAAAAADgOBAQ/original',
+  // },
+  // {
+  //   graph_demo_name: 'The Three Body（三体）',
+  //   graph_name: 'TheThreeBody',
+  //   description: '基于刘慈欣的小说《三体》的故事背景示例。',
+  //   data: three_body_data,
+  //   imgUrl:
+  //     'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*UT-FQZ19zooAAAAAAAAAAAAADgOBAQ/original',
+  // },
+  // {
+  //   graph_demo_name: 'Wandering Earth（流浪地球）',
+  //   graph_name: 'WanderingEarth',
+  //   description: '基于电影《流浪地球1》、《流浪地球2》的剧情设计的示例。',
+  //   data: wandering_earth_data,
+  //   imgUrl:
+  //     'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*Yn1mSLYzQsgAAAAAAAAAAAAADgOBAQ/original',
+  // },
 ];
 export const IQUIRE_LIST = [
   { label: '语句查询', key: 'statement' },

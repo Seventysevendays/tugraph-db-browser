@@ -43,7 +43,6 @@ const ProjectCard = ({
     isNodeEdgeObj: false,
     isConstruct: false,
   });
-  console.log(graphName,'lkm')
   const { nodeEdgeObjList, isNodeEdgeObj,isConstruct } = state;
   const getActions = (text: string, status: boolean, href: string) => (
     <Tooltip title={!status && '请先图构建'}>

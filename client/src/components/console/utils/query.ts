@@ -16,10 +16,11 @@ import {
   IUserParams,
 } from '../../../../../server/app/service/tugraph/interface';
 import { createGraph } from '@/queries/graph';
-import { createDemoGraph } from '@/components/studio/services/GraphController';
 import { FileSchema, Schema } from '@/components/studio/interface/import';
 import { Driver } from 'neo4j-driver';
 import { request } from '@/services/request';
+import { createDemoGraph } from '@/components/studio/services/GraphController';
+import { importSchema } from '@/services/schema';
 
 /* 获取用户列表 */
 export const queryUsers = async (
@@ -198,6 +199,10 @@ export const createSubGraphFromTemplate = async (
     return createSubGraphResult;
   }
 
-  const createAfterResult = await createDemoGraph(params);
+  const createAfterResult = await importSchema(driver,schema,graphName);
+  if(!createAfterResult?.success){
+    return createAfterResult
+  }
+  
   return createAfterResult;
 };

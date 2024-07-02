@@ -47,10 +47,10 @@ export default (app: Application) => {
   );
   // router.put('/api/subgraph', controller.tugraph.subgraph.updateSubGraph);
   // router.delete('/api/subgraph', controller.tugraph.subgraph.deleteSubGraph);
-  router.get(
-    '/api/subgraph/:graphName',
-    controller.tugraph.subgraph.subGraphDetailInfo,
-  ); //TODO 没看到调用了
+  // router.get(
+  //   '/api/subgraph/:graphName',
+  //   controller.tugraph.subgraph.subGraphDetailInfo,
+  // ); //TODO 没看到调用了
   // router.get('/api/subgraph', controller.tugraph.subgraph.getSubGraphList);
 
   // TuGraph Schema
@@ -61,22 +61,22 @@ export default (app: Application) => {
   // );
 
   // 点边类型数量 TODO没有调用
-  router.get(
-    '/api/statistics/:graphName/labels',
-    controller.tugraph.schema.getVertexEdgeSchemaCount,
-  );
-  // 点边数量详情 TODO没调用
-  router.get(
-    '/api/countDetail/:graphName',
-    controller.tugraph.schema.getCountDetail,
-  );
-  // 点边数量大概 TODO 没调用
-  router.get('/api/count/:graphName', controller.tugraph.schema.getCount);
-  // 点边数量 TODO没调用
-  router.get(
-    '/api/statistics/:graphName/count',
-    controller.tugraph.schema.getVertexEdgeCount,
-  );
+  // router.get(
+  //   '/api/statistics/:graphName/labels',
+  //   controller.tugraph.schema.getVertexEdgeSchemaCount,
+  // );
+  // // 点边数量详情 TODO没调用
+  // router.get(
+  //   '/api/countDetail/:graphName',
+  //   controller.tugraph.schema.getCountDetail,
+  // );
+  // // 点边数量大概 TODO 没调用
+  // router.get('/api/count/:graphName', controller.tugraph.schema.getCount);
+  // // 点边数量 TODO没调用
+  // router.get(
+  //   '/api/statistics/:graphName/count',
+  //   controller.tugraph.schema.getVertexEdgeCount,
+  // );
 
   // router.get('/api/schema/:graphName', controller.tugraph.schema.getSchema);
   // router.post('/api/schema/:graphName', controller.tugraph.schema.createSchema);
@@ -86,10 +86,10 @@ export default (app: Application) => {
   // );
 
   // 查询指定点边类型的Schema TODO没用到
-  router.get(
-    '/api/schema/:graphName/:labelType/:labelName',
-    controller.tugraph.schema.getSchemaByType,
-  );
+  // router.get(
+  //   '/api/schema/:graphName/:labelType/:labelName',
+  //   controller.tugraph.schema.getSchemaByType,
+  // );
 
   // 指定点边的 Schema 修改
   // router.post(
