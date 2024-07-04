@@ -33,7 +33,6 @@ import {
   Schema,
 } from './interface';
 import { DATA_TYPE } from './constant';
-import { importGraphSchema } from '@/components/studio/services/ImportController';
 import { request } from './request';
 
 /**
@@ -454,7 +453,7 @@ export const importSchemaMod = async (
   driver: Driver,
   params: ISchemaParams,
 ) => {
-  const { graph: graphName, override = false } = params;
+  const { graph: graphName, override = false,schema } = params;
 
   // 如果是覆盖，则需要先删除原有的 schema
   if (override) {
@@ -473,7 +472,7 @@ export const importSchemaMod = async (
     }
   }
 
-  const result = await importGraphSchema(params);
+  const result = await importSchema(driver,schema,graphName);
 
   return result;
 };
