@@ -15,12 +15,11 @@ import { useImmer } from 'use-immer';
 import DemoCard from '../../../../../components/demo-card';
 import { PUBLIC_PERFIX_CLASS, TUGRAPH_DEOM } from '../../../../../constant';
 import { useGraph } from '../../../../../hooks/useGraph';
-import { useImport } from '../../../../../hooks/useImport';
-import { getLocalData } from '../../../../../utils';
+
 import EditForm from '../edit-form';
 
 import styles from './index.module.less';
-import { dbRecordsTranslator } from '@/translator';
+
 
 type Props = { open: boolean; onClose: () => void };
 const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
@@ -30,7 +29,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
     onGetGraphList,
     onCreateDemoGraph,
   } = useGraph();
-  const { onImportProgress, importProgressCancel } = useImport();
+  
   const [form] = Form.useForm();
   const [state, setState] = useImmer<{
     current?: number;

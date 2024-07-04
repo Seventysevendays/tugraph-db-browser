@@ -2,7 +2,6 @@ import { useRequest } from 'ahooks';
 import {
   importData,
   importProgress,
-  importSchema,
 } from '../services/ImportController';
 import { importSchemaMod } from '@/services/schema';
 import { useModel } from 'umi';
@@ -21,11 +20,6 @@ export const useImport = (params?: {
     error: importDataError,
   } = useRequest(importData, { manual: true });
 
-  const {
-    runAsync: onImportSchema,
-    loading: importSchemaLoading,
-    error: importSchemaError,
-  } = useRequest(importSchema, { manual: true });
 
   const {
     runAsync: onImportProgress,
@@ -49,9 +43,6 @@ export const useImport = (params?: {
     importDataLoading,
     onImportData,
     importDataError,
-    onImportSchema,
-    importSchemaLoading,
-    importSchemaError,
     onImportProgress,
     importProgressLoading,
     importProgressError,

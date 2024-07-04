@@ -9,7 +9,6 @@ export const request = async (params: {
 }) => {
   
   const { driver, cypher, graphName = 'default', parameters = {} } = params;
-  console.log(cypher,parameters)
   if (!cypher) {
     return {};
   }
