@@ -238,7 +238,6 @@ const DataMapSelectNav = ({
         ...state?.propertiesOptions,
       ]
     : state?.propertiesOptions;
-
   return (
     <div
       style={{
@@ -278,6 +277,7 @@ const DataMapSelectNav = ({
                     };
                   }
                   return cur;
+
                 });
                 setFileDataList(newFileDataList);
                 setDefaultSelectValue(pre => {
