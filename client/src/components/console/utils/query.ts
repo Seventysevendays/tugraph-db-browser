@@ -189,11 +189,11 @@ export const createSubGraphFromTemplate = async (
     graphName: string;
     config: { maxSizeGB: number; description: string };
     path: string
-    description: { schema: Schema[]; files: FileSchema[] };
   },
 ) => {
   const { graphName, config ,path} = params;
-  const {schema, files } = await fetch(`${window.location.origin}${path}`).then(res=>res.json())
+  const {schema, files } = await fetch(`${window.location.origin}${path}`).then(res=>res.json()).catch(e=>console.log('json_error',e))
+  console.log(schema, files,'lkm')
   // 1. 创建子图
   const createSubGraphResult = await request({
     driver,
