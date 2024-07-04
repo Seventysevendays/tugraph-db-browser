@@ -220,7 +220,7 @@ export const ImportData: React.FC<Prop> = ({
           files: fileSchemaTransform(fileDataList),
         },
       };
-
+       
       onImportData(params).then(res => {
         if (res.errorCode == 200) {
           const taskId = res?.data?.taskId;

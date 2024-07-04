@@ -65,7 +65,7 @@ export const FileUploader = (props: FileUploaderProps) => {
     } as FileData;
 
     if (status === 'done') {
-      const fileData = (await parseCsv(originFileObj)) as string[][];
+      const fileData = (await parseCsv(originFileObj,5)) as string[][];
       const { columns, dataSource } = tableDataTransform(fileData);
       const labelOptions = cascaderOptionsTransform(graphData);
       fileResult = {
