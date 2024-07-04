@@ -49,15 +49,15 @@ import { FileSchema, Schema } from '../interface/import';
 // }
 
 /* POST Create Demo Graph*/
-export async function createDemoGraph(params: {
-  graphName: string;
-  config: { maxSizeGB: number; description: string };
-  description: { schema: Schema[]; files: FileSchema[] };
-}) {
-  return request(`/api/subgraph/template`, {
-    method: 'POST',
-    data: {
-      ...params,
-    },
-  });
-}
+// export async function createDemoGraph(params: {
+//   graphName: string;
+//   config: { maxSizeGB: number; description: string };
+//   description: { schema: Schema[]; files: FileSchema[] };
+// }) {
+//   return request(`/api/subgraph/template`, {
+//     method: 'POST',
+//     data: {
+//       ...params,
+//     },
+//   });
+// }

@@ -42,12 +42,12 @@ import { request } from './request';
  */
 const statisticsSchemaCount = async (driver: Driver, graphName: string) => {
   const cypher = getGraphSchema();
-  const result = await request(driver, cypher, graphName);
+  const result = await request({ driver, cypher, graphName });
 
   if (!result?.success) {
     return {
       success: false,
-      errorMessage: vertexResult?.errorMessage,
+      errorMessage: result?.errorMessage,
       data: {
         vertexLabels: 0,
         edgeLabels: 0,
@@ -83,11 +83,10 @@ export const getNodeEdgeStatistics = async (
   const schemaResult = await statisticsSchemaCount(driver, graphName);
 
   // step2: 查询数据库中点边的数量
-  const result = await request(driver, getCount(), graphName);
+  const result = await request({ driver, cypher: getCount(), graphName });
   const { data: labelData, success, code } = schemaResult;
   const { vertexLabels, edgeLabels } = labelData;
   const { data } = result;
-  console.log(result);
   const vertexCount =
     data?.find((item: any) => item['type'] === 'vertex')['number'] || 0;
   const edgeCount =
@@ -123,7 +122,7 @@ const querySchemaByLabel = async (
     cypher = getEdgeSchema(labelName);
   }
 
-  const result = await request(driver, cypher, graphName);
+  const result = await request({ driver, cypher, graphName });
 
   if (!result.success) {
     return {
@@ -159,7 +158,11 @@ const querySchemaByLabel = async (
 /* 获取所有边点类型 Schema 的信息 */
 const queryVertexSchema = async (driver: Driver, graphName: string) => {
   // step1: 先获取所有边点类型
-  const typeResult = await request(driver, queryVertexLabels(), graphName);
+  const typeResult = await request({
+    driver,
+    cypher: queryVertexLabels(),
+    graphName,
+  });
   if (!typeResult?.success) {
     return [];
   }
@@ -186,7 +189,7 @@ const queryVertexSchema = async (driver: Driver, graphName: string) => {
  */
 const queryEdgeSchema = async (driver: Driver, graphName: string) => {
   // step1: 先获取所有边类型
-  const typeResult = await request(driver, edgeLabels(), graphName);
+  const typeResult = await request({ driver, cypher: edgeLabels(), graphName });
 
   if (!typeResult.success) {
     return [];
@@ -245,7 +248,7 @@ const createIndex = async (
   const { labelName, propertyName, isUnique = true } = params;
   const cypher = addIndex(labelName, propertyName, isUnique);
 
-  const result = await request(driver, cypher, graphName);
+  const result = await request({ driver, cypher, graphName });
 
   if (isIndependentRequest) {
     return responseFormatter(result);
@@ -289,7 +292,7 @@ export const createSchema = async (
     cypher = createEdge(labelName, JSON.stringify(edgeConstraints), condition);
   }
 
-  const result = await request(driver, cypher, graphName);
+  const result = await request({ driver, cypher, graphName });
   if (!result.success) {
     return {
       code: 200,
@@ -342,7 +345,11 @@ export const deleteSchema = async (
   const { labelType, labelName, graphName } = params;
 
   const type = labelType === 'node' ? 'vertex' : 'edge';
-  const result = await request(driver, deleteLabel(type, labelName), graphName);
+  const result = await request({
+    driver,
+    cypher: deleteLabel(type, labelName),
+    graphName,
+  });
   return responseFormatter(result);
 };
 
@@ -380,7 +387,7 @@ export const addFieldToLabel = async (
 
   const cypher = alterLabelAddFields(type, labelName, condition);
 
-  const result = await request(driver, cypher, graphName);
+  const result = await request({ driver, cypher, graphName });
   return responseFormatter(result);
 };
 
@@ -408,7 +415,7 @@ export const updateFieldToLabel = async (
   const type = labelType === 'node' ? 'vertex' : 'edge';
 
   let cypher = alterLabelModFields(type, labelName, condition);
-  const result = await request(driver, cypher, graphName);
+  const result = await request({ driver, cypher, graphName });
   return responseFormatter(result);
 };
 
@@ -431,7 +438,7 @@ export const deleteLabelField = async (
       JSON.stringify(propertyNames),
     );
 
-    const result = await request(driver, cypher, graphName);
+    const result = await request({ driver, cypher, graphName });
     return responseFormatter(result);
   } catch (error) {
     console.log(error);
@@ -447,11 +454,15 @@ export const importSchemaMod = async (
   driver: Driver,
   params: ISchemaParams,
 ) => {
-  const { graph, override = false } = params;
+  const { graph: graphName, override = false } = params;
 
   // 如果是覆盖，则需要先删除原有的 schema
   if (override) {
-    const deleteSchemaResult = await request(driver, dropDB(), graph);
+    const deleteSchemaResult = await request({
+      driver,
+      cypher: dropDB(),
+      graphName,
+    });
 
     if (!deleteSchemaResult.success) {
       return {
@@ -499,9 +510,24 @@ export const deleteIndexSchema = async (
   const { labelName, propertyName, graphName } = params;
 
   const cypher = deleteIndex(labelName, propertyName);
-  const result = await request(driver, cypher, graphName);
+  const result = await request({ driver, cypher, graphName });
 
   return responseFormatter(result);
+};
+
+/* 导入Schema数据 */
+const mapCypher = async (
+  arr = [],
+  idx = 0,
+  driver: Driver,
+  graphName: string,
+) => {
+  const res = await request({ driver, cypher: arr[idx], graphName });
+  if (res?.success && idx <= arr.length - 2) {
+    return await mapCypher(arr, idx + 1, driver, graphName);
+  } else {
+    return res;
+  }
 };
 
 /* 导入schema */
@@ -520,21 +546,14 @@ export const importSchema = async (
         cypherEdgeList.push(createEdgeLabelByJson(JSON.stringify(item)));
       }
     });
-    const createSchemaPromise = [...cypherVertexList, ...cypherEdgeList].map(
-      async cypher => {
-        return await request(driver, cypher, graphName);
-      },
+    const result = await mapCypher(
+      [...cypherVertexList, ...cypherEdgeList],
+      0,
+      driver,
+      graphName,
     );
-    const result = await Promise.all(createSchemaPromise);
-    const error = result?.find(d => !d?.success);
-
-    if (error) {
-      return error;
-    }
-    return { success: true };
+    return result;
   } catch (error) {
     return error;
   }
 };
-
-

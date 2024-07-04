@@ -1,11 +1,15 @@
 import { dbRecordsTranslator } from '@/translator';
 import { Driver } from 'neo4j-driver';
 
-export const request = async (
-  driver: Driver,
-  cypher: string,
-  graphName = 'default',
-) => {
+export const request = async (params: {
+  driver: Driver;
+  cypher: string;
+  graphName?: string;
+  parameters?: any;
+}) => {
+  
+  const { driver, cypher, graphName = 'default', parameters = {} } = params;
+  console.log(cypher,parameters)
   if (!cypher) {
     return {};
   }
@@ -13,9 +17,8 @@ export const request = async (
   const session = driver.session({
     database: graphName,
   });
-
   return session
-    .run(cypher)
+    .run(cypher,parameters)
     .then(result => {
       return {
         success: true,
@@ -31,4 +34,6 @@ export const request = async (
     .finally(() => {
       session.close();
     });
+ 
+
 };

@@ -7,6 +7,7 @@ import { history } from '@/utils/history';
 import './global.less';
 import styles from './index.less';
 
+
 export const Container = (props: React.ComponentProps<any>) => {
   const location = history.location;
   useEffect(() => {
@@ -51,11 +52,13 @@ export const ConsoleContentContainer = (props: React.ComponentProps<any>) => {
 export default function Layout() {
   const location = useLocation();
   useEffect(() => {
+
     const current: any = routes.findLast(({ path }) =>
       `${location.pathname}`.includes(path),
     );
     document.title = current?.title + '- Openpiece';
   }, [location]);
+
 
   return (
     <div className={styles.appLayout}>

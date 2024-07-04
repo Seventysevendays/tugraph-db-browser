@@ -119,32 +119,17 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                 onCreateDemoGraph({
                   graphName,
                   config: { description, maxSizeGB },
-                  description: cardList[active].data,
+                  path: cardList[active].path,
                 })
                   .then(res => {
-                    setState(draft => {
-                      draft.loading = true;
-                    });
-
-                    onImportProgress(res.data.taskId).then(res => {
-                      if (res.errorCode == 200) {
-                        if (res.data.state === '2') {
-                          message.success('模版创建成功');
-                          importProgressCancel();
-                          setState(draft => {
-                            draft.loading = false;
-                          });
-                          onGetGraphList();
-                          form.resetFields();
-                          onClose();
-                        } else if (res.data.state === '3') {
-                          message.error('模版创建失败' + res.data.reason);
-                          setState(draft => {
-                            draft.loading = false;
-                          });
-                        }
-                      }
-                    });
+                    if (res?.success) {
+                      message.success('模版创建成功');
+                      onGetGraphList();
+                      form.resetFields();
+                      onClose();
+                    } else {
+                      message.error('模版创建失败' + res?.errorMessage);
+                    }
                   })
                   .catch(e => {
                     message.error('模版创建失败' + e);

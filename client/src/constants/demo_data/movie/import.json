@@ -165,7 +165,7 @@
   ],
   "files": [
     {
-      "path": "raw_data/vertex_person.csv",
+      "path": "/vertex_person.csv",
       "format": "CSV",
       "label": "person",
       "header": 2,
@@ -177,7 +177,7 @@
       ]
     },
     {
-      "path": "raw_data/vertex_genre.csv",
+      "path": "/vertex_genre.csv",
       "format": "CSV",
       "label": "genre",
       "header": 2,
@@ -187,7 +187,7 @@
       ]
     },
     {
-      "path": "raw_data/vertex_keyword.csv",
+      "path": "/vertex_keyword.csv",
       "format": "CSV",
       "label": "keyword",
       "header": 2,
@@ -197,7 +197,7 @@
       ]
     },
     {
-      "path": "raw_data/vertex_movie.csv",
+      "path": "/vertex_movie.csv",
       "format": "CSV",
       "label": "movie",
       "header": 2,
@@ -212,7 +212,7 @@
       ]
     },
     {
-      "path": "raw_data/vertex_user.csv",
+      "path": "/vertex_user.csv",
       "format": "CSV",
       "label": "user",
       "header": 2,
@@ -222,7 +222,7 @@
       ]
     },
     {
-      "path": "raw_data/edge_acted_in.csv",
+      "path": "/edge_acted_in.csv",
       "format": "CSV",
       "label": "acted_in",
       "header": 2,
@@ -235,7 +235,7 @@
       ]
     },
     {
-      "path": "raw_data/edge_rate.csv",
+      "path": "/edge_rate.csv",
       "format": "CSV",
       "label": "rate",
       "header": 2,
@@ -243,13 +243,12 @@
       "DST_ID": "movie",
       "columns": [
         "SRC_ID",
-        "SKIP",
         "DST_ID",
         "stars"
       ]
     },
     {
-      "path": "raw_data/edge_directed.csv",
+      "path": "/edge_directed.csv",
       "format": "CSV",
       "label": "directed",
       "header": 2,
@@ -261,7 +260,7 @@
       ]
     },
     {
-      "path": "raw_data/edge_is_friend.csv",
+      "path": "/edge_is_friend.csv",
       "format": "CSV",
       "label": "is_friend",
       "header": 2,
@@ -273,7 +272,7 @@
       ]
     },
     {
-      "path": "raw_data/edge_has_genre.csv",
+      "path": "/edge_has_genre.csv",
       "format": "CSV",
       "label": "has_genre",
       "header": 2,
@@ -285,7 +284,7 @@
       ]
     },
     {
-      "path": "raw_data/edge_has_keyword.csv",
+      "path": "/edge_has_keyword.csv",
       "format": "CSV",
       "label": "has_keyword",
       "header": 2,
@@ -297,7 +296,7 @@
       ]
     },
     {
-      "path": "raw_data/edge_produce.csv",
+      "path": "/edge_produce.csv",
       "format": "CSV",
       "label": "produce",
       "header": 2,
@@ -309,7 +308,7 @@
       ]
     },
     {
-      "path": "raw_data/edge_write.csv",
+      "path": "/edge_write.csv",
       "format": "CSV",
       "label": "write",
       "header": 2,
