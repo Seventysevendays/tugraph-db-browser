@@ -1,60 +1,41 @@
 import { Driver } from 'neo4j-driver';
 import { request } from './request';
 import { responseFormatter } from '@/utils/schema';
-// TODO 测试本地引用
-import user from '@/constants/demo_data/movie/vertex_user.csv';
-import person from '@/constants/demo_data/movie/vertex_person.csv';
-import genre from '@/constants/demo_data/movie/vertex_genre.csv';
-import keyword from '@/constants/demo_data/movie/vertex_keyword.csv';
-import movie from '@/constants/demo_data/movie/vertex_movie.csv';
-
-import acted_in from '@/constants/demo_data/movie/edge_acted_in.csv';
-import directed from '@/constants/demo_data/movie/edge_directed.csv';
-import has_genre from '@/constants/demo_data/movie/edge_has_genre.csv';
-import has_keyword from '@/constants/demo_data/movie/edge_has_keyword.csv';
-import is_friend from '@/constants/demo_data/movie/edge_is_friend.csv';
-import produce from '@/constants/demo_data/movie/edge_produce.csv';
-import rate from '@/constants/demo_data/movie/edge_rate.csv';
-import write from '@/constants/demo_data/movie/edge_write.csv';
 
 import { upsertEdge, upsertVertex } from '@/queries/schema';
 import { FileSchema } from './interface';
 import { parseCsv } from '@/components/studio/utils/parseCsv';
 
-const vertexCsv = {
-  user: user,
-  person: person,
-  genre: genre,
-  keyword: keyword,
-  movie: movie,
-};
-
-const edgeCsv = {
-  acted_in: acted_in,
-  directed: directed,
-  has_genre: has_genre,
-  has_keyword: has_keyword,
-  is_friend: is_friend,
-  produce: produce,
-  rate: rate,
-  write: write,
-};
-
 /* 创建模版数据导入 */
-const mapUpload = async (
-  arr: FileSchema[],
-  idx = 0,
-  driver: Driver,
-  graphName: string,
-  type: string,
-) => {
-  const fileItem = arr[idx];
+const mapUpload = async (params: {
+  schema: FileSchema[];
+  idx?: number;
+  driver: Driver;
+  graphName: string;
+  type: string;
+  delimiter: string;
+}) => {
+  const { schema, idx = 0, driver, graphName, type, delimiter } = params;
+  if (schema?.length === 0) {
+    return {
+      success: true,
+    };
+  }
+  const fileItem = schema[idx];
 
-  const csvData = await fetch(`${window.location.origin}${fileItem.path}`)
-    .then(res => res.blob())
-    .then(res => parseCsv(res));
+  let csvData: any = [];
+  if (fileItem?.file) {
+    csvData = await parseCsv(fileItem?.file, delimiter);
+  } else {
+    csvData = await fetch(`${window.location.origin}${fileItem.path}`)
+      .then(res => res.blob())
+      .then(res => parseCsv(res));
+  }
+
+  const head = fileItem?.header ? fileItem?.header - 1 : 0;
 
   const list = csvData
+    ?.splice(head)
     ?.filter(item => item[0])
     ?.map(itemList => {
       let itemVal = {};
@@ -102,19 +83,28 @@ const mapUpload = async (
   }
   const result = await request(param);
 
-  if (result?.success && idx <= arr.length - 2) {
-    return mapUpload(arr, idx + 1, driver, graphName, type);
+  if (result?.success && idx <= schema.length - 2) {
+    return mapUpload({
+      schema,
+      idx: idx + 1,
+      driver,
+      graphName,
+      type,
+      delimiter,
+    });
   } else {
     return result;
   }
 };
 
 /* 导入数据 */
-export const importData = async (
-  driver: Driver,
-  graphName: string,
-  files: FileSchema[],
-) => {
+export const importData = async (params: {
+  driver: Driver;
+  graphName: string;
+  files: FileSchema[];
+  delimiter?: string;
+}) => {
+  const { driver, graphName, files, delimiter = ',' } = params;
   const vertexList: FileSchema[] = [];
   const edgeList: FileSchema[] = [];
 
@@ -126,18 +116,25 @@ export const importData = async (
     }
   });
 
-  const vertexResult = await mapUpload(
-    vertexList,
-    0,
+  const vertexResult = await mapUpload({
+    schema: vertexList,
     driver,
     graphName,
-    'vertex',
-  );
+    type: 'vertex',
+    delimiter,
+  });
 
   if (!vertexResult?.success) {
     return vertexResult;
   }
-  const edgeResult = await mapUpload(edgeList, 0, driver, graphName, 'edge');
+
+  const edgeResult = await mapUpload({
+    schema: edgeList,
+    driver,
+    graphName,
+    type: 'edge',
+    delimiter,
+  });
   return edgeResult;
 };
 

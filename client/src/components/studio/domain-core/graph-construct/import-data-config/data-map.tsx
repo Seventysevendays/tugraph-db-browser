@@ -52,31 +52,19 @@ const DataMapConfigHeader = ({
           key="dataMap"
           placeholder="请选择"
           options={state?.labelOptions}
-          onChange={(value: any) => {
-            const isEdges = [...value][0] === 'edge';
-            const curEdgeColumns = ['SRC_ID', 'DST_ID'];
-            const curNodeColumns = new Array(data?.data?.columns?.length).fill(
-              '',
-            );
+          onChange={(value: any, selectedOptions) => {
+            const curColumns = new Array(data?.data?.columns?.length).fill('');
             const newFileDataList =
               checkFullArray(fileDataList) &&
               [...fileDataList].map((cur: any) => {
                 if (data?.fileName === cur?.fileName) {
-                  const curLabel = [...value][1] || '';
                   const preFileSchema = data?.fileSchema;
                   return {
                     ...cur,
                     fileSchema: {
                       ...preFileSchema,
-                      label: curLabel,
-                      columns: isEdges ? curEdgeColumns : curNodeColumns,
-                      ...(isEdges
-                        ? { SRC_ID: '', DST_ID: '' }
-                        : {
-                            format: preFileSchema?.format,
-                            header: preFileSchema?.header,
-                            path: preFileSchema?.path,
-                          }),
+                      columns: curColumns,
+                      ...selectedOptions[1],
                     },
                   };
                 }
@@ -147,12 +135,10 @@ const DataMapSelectNav = ({
   data,
   fileDataList,
 }: any) => {
-  const [visibility, setVisibility] = useState<boolean>(true);
   const [defaultSelectValue, setDefaultSelectValue] = useState<string[]>(['']);
 
   const isEdges = [...state?.nodeType][0] === 'edge';
   useEffect(() => {
-    setVisibility(!isEdges);
     if (!isEdges) {
       batchSecureDeletion(data, ['SRC_ID', 'DST_ID']);
     }
@@ -160,7 +146,19 @@ const DataMapSelectNav = ({
   useEffect(() => {
     setDefaultSelectValue(new Array(state?.columns?.length).fill(''));
   }, [state?.nodeType[1]]);
-  return visibility ? (
+
+  /* 边默认有SRC_ID/DST_ID */
+  const options = isEdges
+    ? [
+        { value: 'SRC_ID', label: 'SRC_ID' },
+        {
+          value: 'DST_ID',
+          label: 'DST_ID',
+        },
+        ...state?.propertiesOptions,
+      ]
+    : state?.propertiesOptions;
+  return (
     <div
       style={{
         display: 'flex',
@@ -179,28 +177,27 @@ const DataMapSelectNav = ({
             <Select
               key={index}
               value={defaultSelectValue[index] || ''}
-              options={[...state?.nodeType][0] ? state?.propertiesOptions : []}
+              options={[...state?.nodeType][0] ? options: []}
               style={{
                 width: 120,
               }}
               onChange={value => {
                 const newFileDataList = [...fileDataList].map(cur => {
-                  const curColumns = Array.isArray(cur?.fileSchema?.columns)
+                  if (data?.fileName === cur?.fileName) {
+                    const curColumns = Array.isArray(cur?.fileSchema?.columns)
                     ? cur?.fileSchema?.columns
                     : [];
                   curColumns[index] = value || '';
-                  if (data?.fileName === cur?.fileName) {
                     return {
                       ...cur,
                       fileSchema: {
                         ...cur?.fileSchema,
-                        columns: isEdges
-                          ? cur?.fileSchema?.columns
-                          : curColumns,
+                        columns: curColumns,
                       },
                     };
                   }
                   return cur;
+
                 });
                 setFileDataList(newFileDataList);
                 setDefaultSelectValue(pre => {
@@ -213,7 +210,7 @@ const DataMapSelectNav = ({
           ))
         : null}
     </div>
-  ) : null;
+  );
 };
 
 const DataMapTableView = ({ state }: any) => {
@@ -428,13 +425,11 @@ const DataMap = ({
     ) {
       const dataSource: any[] = data?.data?.dataSource || [];
       const dataColumns = dataSource[hasLabel ? 1 : 0];
-      const dataColumnsTitle = ['起点', '终点'];
-      const isNode = ['node', ''].includes(state?.nodeType[0]);
       const curColumns = Object.entries(dataColumns).map(
         ([key, value], index) => {
           return {
             key,
-            title: isNode ? value : dataColumnsTitle[index],
+            title: value,
             dataIndex: key,
           };
         },

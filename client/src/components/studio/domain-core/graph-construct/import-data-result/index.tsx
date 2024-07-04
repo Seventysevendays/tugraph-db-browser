@@ -9,9 +9,7 @@ import styles from './index.module.less';
 type Prop = {
   status: string;
   graphName: string;
-  taskId?: string;
   setShowResult: Dispatch<SetStateAction<boolean>>;
-  importProgressCancel: () => void;
   errorMessage?: string;
 };
 
@@ -19,7 +17,6 @@ export const ImportDataResult: React.FC<Prop> = ({
   graphName,
   status,
   errorMessage,
-  importProgressCancel,
   setShowResult,
 }) => {
   const titleMap = {
@@ -33,7 +30,6 @@ export const ImportDataResult: React.FC<Prop> = ({
       <Button
         key="0"
         onClick={() => {
-          importProgressCancel();
           window.location.hash = `/query?graphName=${graphName}`;
         }}
       >
@@ -43,7 +39,6 @@ export const ImportDataResult: React.FC<Prop> = ({
         type="primary"
         key="1"
         onClick={() => {
-          importProgressCancel();
           setShowResult(false);
         }}
       >
@@ -53,7 +48,6 @@ export const ImportDataResult: React.FC<Prop> = ({
     error: [
       <Button
         onClick={() => {
-          importProgressCancel();
           setShowResult(false);
         }}
         type="primary"
@@ -65,7 +59,6 @@ export const ImportDataResult: React.FC<Prop> = ({
     loading: [
       <Button
         onClick={() => {
-          importProgressCancel();
           setShowResult(false);
         }}
         type="primary"

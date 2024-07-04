@@ -4,7 +4,6 @@ import { filter, map } from 'lodash';
 import { PUBLIC_PERFIX_CLASS } from '../../../constant';
 import { FileData } from '../../../interface/import';
 import { GraphData } from '../../../interface/schema';
-import { DataMapping } from './data-mapping';
 
 import styles from './index.module.less';
 import { useEffect, useState } from 'react';
