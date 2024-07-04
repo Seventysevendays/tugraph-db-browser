@@ -192,8 +192,7 @@ export const createSubGraphFromTemplate = async (
   },
 ) => {
   const { graphName, config ,path} = params;
-  const {schema, files } = await fetch(`${window.location.origin}${path}`).then(res=>res.json()).catch(e=>console.log('json_error',e))
-  console.log(schema, files,'lkm')
+  const {schema, files } = await fetch(`${window.location.origin}${path}`).then(res=>res.json())
   // 1. 创建子图
   const createSubGraphResult = await request({
     driver,

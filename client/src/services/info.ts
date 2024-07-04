@@ -134,7 +134,7 @@ export const importData = async (
     'vertex',
   );
 
-  if (!res?.success) {
+  if (!vertexResult?.success) {
     return vertexResult;
   }
   const edgeResult = await mapUpload(edgeList, 0, driver, graphName, 'edge');
