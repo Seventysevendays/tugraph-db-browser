@@ -105,6 +105,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
     downloadFile(code, `${detail.name}.${detail.type}`);
   };
   const deleteProcedure = () => {
+    //TODO: By Allen
     onDeleteProcedure({
       graphName,
       procedureType: detail.type,
@@ -223,6 +224,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
         ];
       }
     });
+    //TODO: By Allen
     onGetProcedureCode({
       graphName,
       procedureType: detail.type,
@@ -230,6 +232,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
     }).then((res) => {
       if (res.errorCode === '200') {
         updateState((draft) => {
+          /** 需要用utf-8格式再次解码atob的内容 */
           draft.code = atob(res.data.content);
         });
       }
