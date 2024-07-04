@@ -114,9 +114,9 @@ export interface INodeDataParams {
 }
 
 export interface RestFulResponse {
-    data?: any;
-    success: number;
-    errorMessage?: string;
+  data?: any;
+  success: number;
+  errorMessage?: string;
 }
 
 export interface IUserParams {
@@ -203,6 +203,7 @@ export interface FileSchema {
   header?: number;
   SRC_ID?: string;
   DST_ID?: string;
+  file: any;
 }
 
 export interface ISubGraphTemplateParams {

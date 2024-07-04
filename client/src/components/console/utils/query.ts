@@ -188,11 +188,13 @@ export const createSubGraphFromTemplate = async (
   params: {
     graphName: string;
     config: { maxSizeGB: number; description: string };
-    path: string
+    path: string;
   },
 ) => {
-  const { graphName, config ,path} = params;
-  const {schema, files } = await fetch(`${window.location.origin}${path}`).then(res=>res.json())
+  const { graphName, config, path } = params;
+  const { schema, files } = await fetch(
+    `${window.location.origin}${path}`,
+  ).then(res => res.json());
   // 1. 创建子图
   const createSubGraphResult = await request({
     driver,
@@ -207,7 +209,7 @@ export const createSubGraphFromTemplate = async (
     return createAfterResult;
   }
 
-  const importDataResult = await importData(driver, graphName,files);
+  const importDataResult = await importData({ driver, graphName, files });
 
   return importDataResult;
 };
