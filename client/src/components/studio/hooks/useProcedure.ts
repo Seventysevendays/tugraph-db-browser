@@ -1,18 +1,27 @@
 import { useRequest } from 'ahooks';
 import {
-  callProcedure,
-  deleteProcedure,
-  getProcedureCode,
+  // callProcedure,
+  // deleteProcedure,
+  // getProcedureCode,
   getProcedureDemo,
-  getProcedureList,
-  uploadProcedure,
+  // getProcedureList,
+  // uploadProcedure,
 } from '../services/ProcedureController';
+
+import {
+  buildProcedure,
+  getProcedureList,
+  executeProcedure,
+  getProcedureCode,
+  deleteProcedure
+} from '@/services/procedure';
+
 export const useProcedure = () => {
   const {
     runAsync: onUploadProcedure,
     loading: UploadProcedureLoading,
     error: UploadProcedureError,
-  } = useRequest(uploadProcedure, { manual: true });
+  } = useRequest(buildProcedure, { manual: true });
   const {
     runAsync: onGetProcedureCode,
     loading: GetProcedureCodeLoading,
@@ -32,7 +41,7 @@ export const useProcedure = () => {
     runAsync: onCallProcedure,
     loading: CallProcedureLoading,
     error: CallProcedureError,
-  } = useRequest(callProcedure, { manual: true });
+  } = useRequest(executeProcedure, { manual: true });
   const {
     runAsync: onGetProcedureDemo,
     loading: GetProcedureDemoLoading,
