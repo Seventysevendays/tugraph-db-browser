@@ -6,20 +6,20 @@
 /** procedure list */
 interface IProcedureListParams {
   graphName: string;
-  procedureType: 'cpp' | 'python';
-  version: string;
+  procedureType: 'CPP' | 'PY';
 }
 
 /** procedure upload */
-interface IProcedureUploadParams {
+interface IProcedureBuildParams {
   graphName: string;
-  procedureType: 'cpp' | 'python';
   procedureName: string;
+  procedureType: 'CPP' | 'PY';
+  description: string;
+  /** 上传文件需转换为base64字符表示 */
   content: string;
   codeType: string;
-  description: string;
   readonly: string;
-  version: string;
+  version: 'v1' | 'v2';
 }
 
 /** procedure code */
@@ -54,7 +54,7 @@ interface IProcedureDemoParams {
 
 export {
   IProcedureListParams,
-  IProcedureUploadParams,
+  IProcedureBuildParams,
   IProcedureCodeParams,
   IProcedureDeleteParams,
   IProcedureExecuteParams,
