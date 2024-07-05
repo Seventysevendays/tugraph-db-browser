@@ -100,6 +100,7 @@ export const ImportDataConfig = (prop: ImportDataConfigProps) => {
   const [openKey, setOpenKey] = useState<string[]>([]);
 
   const handleDelete = (fileName: string) => {
+   
     const newFileList = filter(
       fileDataList,
       (item: FileData) => item.fileName !== fileName,

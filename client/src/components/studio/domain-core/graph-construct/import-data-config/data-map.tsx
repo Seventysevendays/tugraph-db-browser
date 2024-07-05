@@ -51,6 +51,7 @@ const DataMapConfigHeader = ({
           size="small"
           key="dataMap"
           placeholder="请选择"
+          defaultValue={data?.selectedValue || []}
           options={state?.labelOptions}
           onChange={(value: any, selectedOptions) => {
             const curColumns = new Array(data?.data?.columns?.length).fill('');
@@ -64,15 +65,16 @@ const DataMapConfigHeader = ({
                     fileSchema: {
                       ...preFileSchema,
                       columns: curColumns,
-                      ...selectedOptions[1],
+                      ...selectedOptions?.[1],
                     },
+                    selectedValue:value || ['','']
                   };
                 }
                 return cur;
               });
             setFileDataList(newFileDataList);
             setState((pre: any) => {
-              return { ...pre, nodeType: value };
+              return { ...pre, nodeType: value || ['','']  };
             });
           }}
         />
@@ -95,7 +97,7 @@ const DataMapConfigHeader = ({
           从第
         </span>
         <InputNumber
-          defaultValue={0}
+          defaultValue={ data?.fileSchema?.header || 0}
           size="small"
           onChange={value => {
             const newFileDataList =
@@ -144,7 +146,9 @@ const DataMapSelectNav = ({
     }
   }, [state?.nodeType[0]]);
   useEffect(() => {
-    setDefaultSelectValue(new Array(state?.columns?.length).fill(''));
+   
+   const defaulColumns =  data?.fileSchema?.columns || new Array(state?.columns?.length).fill('')
+    setDefaultSelectValue(defaulColumns);
   }, [state?.nodeType[1]]);
 
   /* 边默认有SRC_ID/DST_ID */
@@ -452,7 +456,7 @@ const DataMap = ({
       style={{
         background: '#fff',
       }}
-      key={'data-map'}
+      key={`data-map_${data?.fileName}`}
     >
       <DataMapConfigHeader
         data={data}
