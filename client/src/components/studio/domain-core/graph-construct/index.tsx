@@ -287,19 +287,19 @@ export const GraphConstruct = () => {
         >
           前往图查询
         </Button>
-        {currentStep === 0 ? 
-        <Button
-          disabled={isEmpty(data.edges) && isEmpty(data.nodes)}
-          type="primary"
-          onClick={() => {
-            setState(draft => {
-              draft.currentStep += 1;
-            });
-          }}
-        >
-          数据导入
-        </Button>
-: (
+        {currentStep === 0 ? (
+          <Button
+            disabled={isEmpty(data.edges) && isEmpty(data.nodes)}
+            type="primary"
+            onClick={() => {
+              setState(draft => {
+                draft.currentStep += 1;
+              });
+            }}
+          >
+            数据导入
+          </Button>
+        ) : (
           <Button
             onClick={() => {
               setState(draft => {
