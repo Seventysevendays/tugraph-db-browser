@@ -227,7 +227,6 @@ export const formatMultipleResponse = (params: IMultipleParams[]) => {
   const paths: any = [];
   const properties: IPropertiesParams[] = [];
   for (const multi of params) {
-    
     for (const key in multi) {
       const current = multi[key];
       if (current?.__isNode__) {
