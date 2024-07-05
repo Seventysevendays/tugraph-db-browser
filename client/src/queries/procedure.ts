@@ -1,51 +1,67 @@
 /**
- * file: procedure SQL call
+ * file: procedure SQL command
  * author: Allen
 */
 
 import {
   IProcedureListParams,
-  IProcedureUploadParams,
+  IProcedureBuildParams,
   IProcedureCodeParams,
   IProcedureDeleteParams,
   IProcedureExecuteParams,
   IProcedureDemoParams
 } from '@/types/studio/procedure';
 
-/** get procedure list*/
-const getProcedureList = (params: IProcedureListParams) => {
-  return ``;
+/** build procedure */
+const buildProcedureSQL = (params: IProcedureBuildParams) => {
+  const {
+    procedureName,
+    procedureType,
+    codeType,
+    description,
+    version,
+    readonly
+  } = params;
+
+  return `CALL db.plugin.loadPlugin('${procedureType}', '${procedureName}', $data, '${codeType}', '${description}', ${readonly}, '${version}')`;
 };
 
-/** upload procedure */
-const uploadProcedure = (params: IProcedureUploadParams) => {
-  return ``;
+/** get procedure list*/
+const getProcedureListSQL = (params: IProcedureListParams) => {
+  const { procedureType } = params;
+  /** any指代的是返回CPP或者PY所有类型的信息 */
+  const codeType = 'any';
+  return `CALL db.plugin.listPlugin('${procedureType}', '${codeType}')`;
 };
 
 /** get procedure source code*/
-const getProcedureCode = (params: IProcedureCodeParams) => {
-  return ``;
+const getProcedureCodeSQL = (params: IProcedureCodeParams) => {
+  const { procedureType, procedureName } = params;
+  return `CALL db.plugin.getPluginInfo('${procedureType}', '${procedureName}', true)`;
 };
 
 /** delete procedure */
-const deleteProcedure = (params: IProcedureDeleteParams) => {
-  return ``;
+const deleteProcedureSQL = (params: IProcedureDeleteParams) => {
+  const { procedureType, procedureName } = params;
+  return `CALL db.plugin.deletePlugin('${procedureType}', '${procedureName}')`;
 };
 
 /** execute procedure */
-const executeProcedure = (params: IProcedureExecuteParams) => {
-  return ``;
+const executeProcedureSQL = (params: IProcedureExecuteParams) => {
+  const { procedureType, procedureName, timeout, inProcess } = params;
+  return`CALL db.plugin.callPlugin('${procedureType}', '${procedureName}', $data, ${timeout.toFixed(2)}, ${inProcess})`;
 };
 
 /** get procedure demo */
-const getProcedureDemo = (params: IProcedureDemoParams) => {
+const getProcedureDemoSQL = (params: IProcedureDemoParams) => {
   return ``;
 }
 
 export {
-  getProcedureList,
-  uploadProcedure,
-  getProcedureCode,
-  deleteProcedure,
-  executeProcedure
+  buildProcedureSQL,
+  getProcedureListSQL,
+  getProcedureCodeSQL,
+  deleteProcedureSQL,
+  executeProcedureSQL,
+  getProcedureDemoSQL
 };
