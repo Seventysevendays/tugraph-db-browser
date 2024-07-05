@@ -77,7 +77,6 @@ const getProcedureList = async(driver: Driver, params: IProcedureListParams) => 
 };
 
 const executeProcedure = async(driver: Driver, params: IProcedureExecuteParams) => {
-  console.log('execute params:', params);
   const { graphName, param } = params;
   const result = await request({
     driver,
@@ -87,19 +86,16 @@ const executeProcedure = async(driver: Driver, params: IProcedureExecuteParams) 
       data: param || {}
     }
   });
-  console.log('call result:', result);
   return responseFormatter(result);
 }
 
 const getProcedureCode = async(driver: Driver, params: IProcedureCodeParams) => {
-  console.log('code params:', params);
   const { graphName } = params;
   const result = await request({
     driver,
     graphName,
     cypher: getProcedureCodeSQL(params),
   });
-  console.log('code result:', result);
   return responseFormatter(result);
 };
 
