@@ -244,6 +244,7 @@ const ExecuteResult: React.FC<ResultProps> = ({
     nodes: Array<FormatDataNodeProp>;
     edges: Array<FormatDataEdgeProp>;
   }) => {
+  
     const newNodes = map(formatData?.nodes, item => ({
       ...item,
       style: { label: { value: item.properties?.name || item.label } },

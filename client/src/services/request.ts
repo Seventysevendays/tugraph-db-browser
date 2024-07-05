@@ -12,8 +12,8 @@ export const request = async (params: {
   if (!cypher) {
     return {};
   }
-
-  const session = driver.session({
+  
+  const session =driver.session({
     database: graphName,
   });
   return session
