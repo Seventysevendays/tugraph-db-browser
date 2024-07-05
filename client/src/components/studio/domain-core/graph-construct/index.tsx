@@ -47,7 +47,7 @@ export const GraphConstruct = () => {
   const location = window.location;
   const [hoverType, setHoverType] = useState('');
   const graphList = getLocalData('TUGRAPH_SUBGRAPH_LIST') as SubGraph[];
-  const { onImportGraphSchema, ImportGraphSchemaLoading } = useImport();
+  const { onImportGraphSchema } = useImport();
   const [state, setState] = useImmer<{
     graphListOptions: { label: string; value: string }[];
     currentGraphName: string;
@@ -77,6 +77,7 @@ export const GraphConstruct = () => {
       type?: string;
       properties?: Array<SchemaProperties>;
     }>;
+    importSchemaLoading: boolean;
   }>({
     graphListOptions: graphList?.map((graph: SubGraph) => {
       return {
@@ -105,6 +106,7 @@ export const GraphConstruct = () => {
     isModelOpen: false,
     override: false,
     schema: [],
+    importSchemaLoading: false
   });
   const {
     currentGraphName,
@@ -128,6 +130,7 @@ export const GraphConstruct = () => {
     override,
     schema,
     visible,
+    importSchemaLoading,
   } = state;
 
   const { onGetGraphSchema, onCreateLabelSchema, onDeleteLabelSchema } =
@@ -284,19 +287,19 @@ export const GraphConstruct = () => {
         >
           前往图查询
         </Button>
-        {currentStep === 0 ? 
-        <Button
-          disabled={isEmpty(data.edges) && isEmpty(data.nodes)}
-          type="primary"
-          onClick={() => {
-            setState(draft => {
-              draft.currentStep += 1;
-            });
-          }}
-        >
-          数据导入
-        </Button>
-: (
+        {currentStep === 0 ? (
+          <Button
+            disabled={isEmpty(data.edges) && isEmpty(data.nodes)}
+            type="primary"
+            onClick={() => {
+              setState(draft => {
+                draft.currentStep += 1;
+              });
+            }}
+          >
+            数据导入
+          </Button>
+        ) : (
           <Button
             onClick={() => {
               setState(draft => {
@@ -364,7 +367,6 @@ export const GraphConstruct = () => {
   useEffect(() => {
     graphCanvasContextValue.graph?.on('click', (val: any) => {
       addQueryParam('at', 'canvas');
-
       onEditShow();
       if (val.shape) {
         setState(draft => {
@@ -405,6 +407,34 @@ export const GraphConstruct = () => {
         });
       };
     },
+  };
+
+  // 导入模版确认按钮
+  const handleOk = () => {
+    setState(draft => {
+        draft.importSchemaLoading = true;
+    });
+    onImportGraphSchema({
+      graph: currentGraphName,
+      schema,
+      override,
+    }).then(res => {
+      if (res.success) {
+        message.success('导入成功').then(() => {
+          getGraphSchema(currentGraphName)
+          setState(draft => {
+            draft.isModelOpen = false;
+            draft.importSchemaLoading = false;
+          });
+        });
+      } else {
+        message.error('导入失败' + res.errorMessage);
+      }
+    }).finally(()=>{
+      setState(draft => {
+        draft.importSchemaLoading = false;
+    });
+    });
   };
   return (
     <div
@@ -482,7 +512,7 @@ export const GraphConstruct = () => {
             }).then(res => {
               if (res.success) {
                 message.success('删除成功');
-                window.location.reload();
+                getGraphSchema(currentGraphName)
               } else {
                 message.error('删除失败' + res.errorMessage);
               }
@@ -576,14 +606,26 @@ export const GraphConstruct = () => {
         <Modal
           title="导入模型"
           width={480}
-          visible={isModelOpen}
+          open={isModelOpen}
           onCancel={() => {
             setState(draft => {
               draft.isModelOpen = false;
             });
           }}
-          cancelText="取消"
-          okText="确认"
+          footer={[
+            <Button
+              onClick={() => {
+                setState(draft => {
+                  draft.isModelOpen = false;
+                });
+              }}
+            >
+              取消
+            </Button>,
+            <Button type="primary" loading={importSchemaLoading} onClick={handleOk}>
+              确认
+            </Button>,
+          ]}
           okButtonProps={{
             style: {
               borderRadius: 6,
@@ -594,26 +636,8 @@ export const GraphConstruct = () => {
               borderRadius: 6,
             },
           }}
-          confirmLoading={ImportGraphSchemaLoading}
           className={styles[`${PUBLIC_PERFIX_CLASS}-model`]}
-          onOk={() => {
-            onImportGraphSchema({
-              graph: currentGraphName,
-              schema,
-              override,
-            }).then(res => {
-              if (res.success) {
-                message.success('导入成功').then(() => {
-                  setState(draft => {
-                    draft.isModelOpen = false;
-                    window.location.reload();
-                  });
-                });
-              } else {
-                message.error('导入失败' + res.errorMessage);
-              }
-            });
-          }}
+
         >
           <div className={styles[`${PUBLIC_PERFIX_CLASS}-upload`]}>
             <Upload {...uploadProps}>

@@ -1,8 +1,4 @@
 import { CollasibleStep } from '../components/collapsable-steps';
-import movie_data from '@/constants/demo_data/movie/import.json';
-import three_body_data from './demo-json/three_body.json';
-import three_kingdoms_data from './demo-json/three_kingdoms.json';
-import wandering_earth_data from './demo-json/wandering_earth.json';
 export type PROJECT_TAB = 'MY_PROJECT' | 'ALL_PROJEXCT';
 export const PUBLIC_PERFIX_CLASS = 'ant-tugraph';
 
