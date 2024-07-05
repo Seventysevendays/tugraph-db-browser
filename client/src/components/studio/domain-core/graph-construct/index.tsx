@@ -381,6 +381,10 @@ export const GraphConstruct = () => {
   const uploadProps: UploadProps = {
     name: 'file',
     maxCount: 1,
+    customRequest(options) {
+      // @ts-ignore
+      options.onSuccess(options.filename);
+    },
     onChange(info) {
       if (info.file.status === 'done') {
         message.success(`${info.file.name} 文件上传成功`);

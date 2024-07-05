@@ -115,8 +115,9 @@ export const ImportData: React.FC<Prop> = ({
       const params = {
         graphName, //导入的子图名称
         files: fileSchemaTransform(fileDataList),
-        delimiter: val.delimiter, //数据分隔符
+        delimiter: val?.delimiter, //数据分隔符
       };
+     
       onImportData(params).then(res => {
         if (res.success) {
           updateState(draft => {
