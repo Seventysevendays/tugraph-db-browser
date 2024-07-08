@@ -8,12 +8,12 @@ export const request = async (params: {
   parameters?: any;
 }) => {
   
-  const { driver, cypher, graphName = 'default', parameters = {} } = params;
+  const { driver, cypher, graphName = 'default', parameters = {}} = params;
   if (!cypher) {
     return {};
   }
-
-  const session = driver.session({
+  
+  const session =  driver.session({
     database: graphName,
   });
   return session

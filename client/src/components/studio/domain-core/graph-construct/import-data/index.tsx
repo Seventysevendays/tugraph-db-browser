@@ -72,6 +72,7 @@ export const ImportData: React.FC<Prop> = ({
   const [showResult, setShowResult] = useState<boolean>(false);
   const [state, updateState] = useImmer<{
     resultStatus: string;
+    resultData: any;
     errorMessage: string;
     isFullView: boolean;
     uploadLoading: boolean;
@@ -82,8 +83,9 @@ export const ImportData: React.FC<Prop> = ({
     isFullView: false,
     uploadLoading: false,
     taskId: '',
+    resultData: {},
   });
-  const { resultStatus, errorMessage, isFullView, taskId, uploadLoading } =
+  const { resultStatus, errorMessage, isFullView, taskId, uploadLoading,resultData } =
     state;
 
   const onImport = () => {
@@ -117,11 +119,12 @@ export const ImportData: React.FC<Prop> = ({
         files: fileSchemaTransform(fileDataList),
         delimiter: val?.delimiter, //数据分隔符
       };
-     
+
       onImportData(params).then(res => {
-        if (res.success) {
+        if (res?.success) {
           updateState(draft => {
             draft.resultStatus = 'success';
+            draft.resultData = res?.data || {};
           });
         } else {
           updateState(draft => {
@@ -152,6 +155,7 @@ export const ImportData: React.FC<Prop> = ({
       >
         <ImportDataResult
           status={resultStatus}
+          data={resultData}
           errorMessage={errorMessage}
           setShowResult={setShowResult}
           graphName={graphName}
@@ -205,7 +209,6 @@ export const ImportData: React.FC<Prop> = ({
               <Form.Item
                 // rules={[{ required: true, message: `请输入分隔符` }]}
                 label={`分割符`}
-                required
                 name={'delimiter'}
               >
                 <Input placeholder={`请输入分隔符`} />
@@ -239,12 +242,12 @@ export const ImportData: React.FC<Prop> = ({
                 {!isFullView && <span>数据对应表</span>}
                 {!isEmpty(fileDataList) && (
                   <Space size={16}>
-                    <FileUploader
+                    {/* <FileUploader
                       graphData={graphData}
                       type="text"
                       setFileDataList={setFileDataList}
                       fileDataList={fileDataList}
-                    />
+                    /> */}
                     {!isFullView && (
                       <Tooltip title={'全屏显示'}>
                         <IconFont

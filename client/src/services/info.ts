@@ -81,6 +81,7 @@ const mapUpload = async (params: {
       DST,
     };
   }
+
   const result = await request(param);
 
   if (result?.success && idx <= schema.length - 2) {

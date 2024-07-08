@@ -104,6 +104,7 @@ export const FileUploader = (props: FileUploaderProps) => {
   const uploadProps: UploadProps = {
     name: 'file',
     multiple: true,
+    maxCount: 1,
     accept: '.csv',
     customRequest(options) {
       // @ts-ignore

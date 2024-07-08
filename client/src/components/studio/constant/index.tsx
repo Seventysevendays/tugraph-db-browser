@@ -1,8 +1,4 @@
 import { CollasibleStep } from '../components/collapsable-steps';
-import movie_data from '@/constants/demo_data/movie/import.json';
-import three_body_data from './demo-json/three_body.json';
-import three_kingdoms_data from './demo-json/three_kingdoms.json';
-import wandering_earth_data from './demo-json/wandering_earth.json';
 export type PROJECT_TAB = 'MY_PROJECT' | 'ALL_PROJEXCT';
 export const PUBLIC_PERFIX_CLASS = 'ant-tugraph';
 
@@ -90,14 +86,14 @@ export const TUGRAPH_DEOM = [
     imgUrl:
       'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*vLs3RIMgT4UAAAAAAAAAAAAADgOBAQ/original',
   },
-  // {
-  //   graph_demo_name: 'Three Kingdoms（三国）',
-  //   graph_name: 'ThreeKingdoms',
-  //   description: '基于三国时期的历史事件的示例。',
-  //   path: '/resource/demo_data/ThreeKingdoms/import.json',
-  //   imgUrl:
-  //     'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*ebTkRIJx4SwAAAAAAAAAAAAADgOBAQ/original',
-  // },
+  {
+    graph_demo_name: 'Three Kingdoms（三国）',
+    graph_name: 'ThreeKingdoms',
+    description: '基于三国时期的历史事件的示例。',
+    path: '/resource/demo_data/ThreeKingdoms/import.json',
+    imgUrl:
+      'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*ebTkRIJx4SwAAAAAAAAAAAAADgOBAQ/original',
+  },
   // {
   //   graph_demo_name: 'The Three Body（三体）',
   //   graph_name: 'TheThreeBody',

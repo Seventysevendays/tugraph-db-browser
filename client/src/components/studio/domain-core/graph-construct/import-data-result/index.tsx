@@ -1,5 +1,5 @@
 import { ClockCircleFilled } from '@ant-design/icons';
-import { Button, Result } from 'antd';
+import { Button, Descriptions, Result } from 'antd';
 import { ResultStatusType } from 'antd/lib/result';
 import React, { Dispatch, SetStateAction } from 'react';
 import { PUBLIC_PERFIX_CLASS } from '../../../constant';
@@ -11,6 +11,7 @@ type Prop = {
   graphName: string;
   setShowResult: Dispatch<SetStateAction<boolean>>;
   errorMessage?: string;
+  data: any;
 };
 
 export const ImportDataResult: React.FC<Prop> = ({
@@ -18,6 +19,7 @@ export const ImportDataResult: React.FC<Prop> = ({
   status,
   errorMessage,
   setShowResult,
+  data,
 }) => {
   const titleMap = {
     success: '数据导入成功',
@@ -80,6 +82,24 @@ export const ImportDataResult: React.FC<Prop> = ({
       />
     );
   }
+
+  // 上传结果
+  const renderDes = () => {
+    const {
+      total = 0,
+      data_error = 0,
+      insert = 0,
+      update = 0,
+    } = data?.[0] || {};
+    return (
+      <Descriptions column={1}>
+        <Descriptions.Item label="总共条数">{total}条</Descriptions.Item>
+        <Descriptions.Item label="数据插入">{insert}条</Descriptions.Item>
+        <Descriptions.Item label="数据更新">{update}条</Descriptions.Item>
+        <Descriptions.Item label="数据错误">{data_error}条</Descriptions.Item>
+      </Descriptions>
+    );
+  };
   return (
     <Result
       className={styles[`${PUBLIC_PERFIX_CLASS}-result`]}
@@ -87,6 +107,8 @@ export const ImportDataResult: React.FC<Prop> = ({
       title={titleMap[status]}
       subTitle={errorMessage}
       extra={extraButtonMap[status]}
-    />
+    >
+      {status === 'success' ? renderDes() : null}
+    </Result>
   );
 };
