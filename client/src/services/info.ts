@@ -1,6 +1,5 @@
 import { Driver } from 'neo4j-driver';
 import { request } from './request';
-import { responseFormatter } from '@/utils/schema';
 
 import { upsertEdge, upsertVertex } from '@/queries/schema';
 import { FileSchema } from './interface';
@@ -60,7 +59,7 @@ const mapUpload = async (params: {
 
       return itemVal;
     });
-
+console.log(list)
   const cypher =
     type === 'vertex'
       ? upsertVertex(fileItem.label)
@@ -139,15 +138,3 @@ export const importData = async (params: {
   return edgeResult;
 };
 
-export const checkFile = async (driver: Driver, params: any) => {
-  const cypher = '';
-  const result = await request({ driver, cypher });
-  return responseFormatter(result);
-};
-
-export const uploadFile = async (driver: Driver, params: any) => {
-
-  const cypher = '';
-  const result = await request({ driver, cypher });
-  return responseFormatter(result);
-};
