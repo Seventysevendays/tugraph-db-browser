@@ -4,6 +4,9 @@ export const PUBLIC_PERFIX_CLASS = 'ant-tugraph';
 
 export { EngineServerURL as SERVER_HOST } from '../../../../../server/app/service/tugraph/constant';
 
+// utils
+import { generateNameWithHash } from '@/utils/common';
+
 export const STEP_LIST: CollasibleStep[] = [
   {
     title: '新建一张图',
@@ -80,7 +83,7 @@ export const TUGRAPH_DEOM_NAME = [
 export const TUGRAPH_DEOM = [
   {
     graph_demo_name: 'Movie（电影）',
-    graph_name: 'Movie',
+    graph_name: generateNameWithHash('Movie'),
     description: '基于电影、演员、用户场景的简单示例。',
     path: '/resource/demo_data/movie/import.json',
     imgUrl:
@@ -88,7 +91,7 @@ export const TUGRAPH_DEOM = [
   },
   {
     graph_demo_name: 'Three Kingdoms（三国）',
-    graph_name: 'ThreeKingdoms',
+    graph_name: generateNameWithHash('ThreeKingdoms'),
     description: '基于三国时期的历史事件的示例。',
     path: '/resource/demo_data/ThreeKingdoms/import.json',
     imgUrl:
