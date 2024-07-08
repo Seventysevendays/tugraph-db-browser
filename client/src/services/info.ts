@@ -31,7 +31,7 @@ const mapUpload = async (params: {
       .then(res => parseCsv(res));
   }
 
-  const head = fileItem?.header ? fileItem?.header - 1 : 0;
+  const head = fileItem?.header || 0;
 
   const list = csvData
     ?.splice(head)
@@ -61,7 +61,6 @@ const mapUpload = async (params: {
       return itemVal;
     });
 
-   
   const cypher =
     fileItem.type === 'vertex'
       ? upsertVertex(fileItem.label)

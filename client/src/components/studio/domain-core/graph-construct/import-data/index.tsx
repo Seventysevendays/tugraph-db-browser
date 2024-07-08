@@ -135,6 +135,7 @@ export const ImportData: React.FC<Prop> = ({
             draft.resultStatus = 'error';
             draft.errorMessage = res.errorMessage;
           });
+          message.error('上传失败' + res.errorMessage);
         }
         setShowResult(true);
       });

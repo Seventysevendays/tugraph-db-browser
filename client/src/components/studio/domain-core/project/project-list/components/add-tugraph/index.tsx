@@ -158,6 +158,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
       title="新建图"
       open={open}
       onCancel={onClose}
+      style={{ top: 20 }}
       width={917}
       className={styles[`${PUBLIC_PERFIX_CLASS}-add-modal-container`]}
       footer={footer}
