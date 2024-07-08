@@ -18,6 +18,9 @@ import { useGraph } from '../../../../../hooks/useGraph';
 
 import EditForm from '../edit-form';
 
+// utils
+import { generateNameWithHash } from '@/utils/common';
+
 import styles from './index.module.less';
 
 
@@ -60,7 +63,8 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
   const { current, active, loading } = state;
   const cardList = [
     {
-      graph_name: '空模版',
+      graph_demo_name: '空模版',
+      graph_name: generateNameWithHash('空模版'),
       description: '自行定义点边模型和数据导入。',
       imgUrl:
         'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*iLrCTZt0lAcAAAAAAAAAAAAADgOBAQ/original',
@@ -68,6 +72,7 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
     //TODO暂时功能隐藏
     ...TUGRAPH_DEOM,
   ];
+
   const footer =
     current === 0 ? (
       <>
@@ -77,6 +82,10 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
           onClick={() => {
             setState(draft => {
               draft.current = 1;
+            });
+            form.setFieldsValue({
+              graphName: cardList[active || 0].graph_name,
+              description: cardList[active || 0].description
             });
           }}
         >
@@ -177,10 +186,6 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                       onClick={() => {
                         setState(draft => {
                           draft.active = index;
-                        });
-                        form.setFieldsValue({
-                          graphName: item.graph_name,
-                          description: item.description,
                         });
                       }}
                     />
