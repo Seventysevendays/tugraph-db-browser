@@ -1,7 +1,7 @@
 import { ClockCircleFilled } from '@ant-design/icons';
 import { Button, Descriptions, Result } from 'antd';
 import { ResultStatusType } from 'antd/lib/result';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { PUBLIC_PERFIX_CLASS } from '../../../constant';
 
 import styles from './index.module.less';

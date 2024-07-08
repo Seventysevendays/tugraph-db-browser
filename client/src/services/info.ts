@@ -64,7 +64,6 @@ const mapUpload = async (params: {
       return itemVal;
     });
 
-
   const cypher =
     fileItem.type === 'vertex'
       ? upsertVertex(fileItem.label)
@@ -87,7 +86,7 @@ const mapUpload = async (params: {
   }
 
   const result = await request(param);
-
+  
   if (result?.success && idx <= schema.length - 2) {
     return mapUpload({
       schema,
@@ -131,5 +130,6 @@ export const importData = async (params: {
     graphName,
     delimiter,
   });
+
   return vertexResult;
 };

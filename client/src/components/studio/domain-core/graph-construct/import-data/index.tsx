@@ -123,7 +123,6 @@ export const ImportData: React.FC<Prop> = ({
      
 
       // 1. 导入数据
-
       const params = {
         graphName, //导入的子图名称
         files: fileSchemaTransform(fileDataList),
