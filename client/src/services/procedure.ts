@@ -21,7 +21,6 @@ import {
   IProcedureCodeParams,
   IProcedureDeleteParams,
   IProcedureExecuteParams,
-  IProcedureDemoParams
 } from '@/types/studio/procedure';
 import { Driver } from 'neo4j-driver';
 
