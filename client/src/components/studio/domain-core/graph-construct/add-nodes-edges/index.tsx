@@ -94,7 +94,7 @@ export const AddNodesEdges: React.FC<Prop> = ({
     return map(
       filter(
         xor(attrPropertyNames, indexPropertyNames),
-        item => item !== undefined,
+        item => item ,
       ),
       item => ({ label: item, value: item }),
     );

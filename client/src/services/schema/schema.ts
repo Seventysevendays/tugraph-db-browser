@@ -1,14 +1,8 @@
-import { InitialState } from '@/app';
 import {
-  addIndex,
-  alterLabelAddFields,
-  alterLabelDelFields,
-  alterLabelModFields,
   createEdge,
   createEdgeLabelByJson,
   createVertex,
   createVertexLabelByJson,
-  deleteIndex,
   deleteLabel,
   dropDB,
   edgeLabels,
@@ -27,13 +21,11 @@ import { Driver } from 'neo4j-driver';
 import {
   ICreateSchemaParams,
   IDeleteSchemaParams,
-  IIndexParams,
   ISchemaParams,
-  IUpdateSchemaParams,
   Schema,
-} from './interface';
-import { DATA_TYPE } from './constant';
-import { request } from './request';
+} from '@/types/services';
+import { request } from '../request';
+import { createIndex } from './IndexSchema';
 
 /**
  * 统计点类型和边类型的数量
@@ -232,30 +224,6 @@ export const getSchema = async (
 };
 
 /**
- * 创建索引
- * @param graphName 图名称
- * @param params
- * @param isIndependentRequest 是否为独立请求
- * @returns
- */
-const createIndex = async (
-  driver: Driver,
-  graphName: string,
-  params: IIndexParams,
-  isIndependentRequest = false,
-) => {
-  const { labelName, propertyName, isUnique = true } = params;
-  const cypher = addIndex(labelName, propertyName, isUnique);
-
-  const result = await request({ driver, cypher, graphName });
-
-  if (isIndependentRequest) {
-    return responseFormatter(result);
-  }
-  return result.data;
-};
-
-/**
  * 创建 Schema
  * @param params
  * @returns
@@ -352,97 +320,6 @@ export const deleteSchema = async (
   return responseFormatter(result);
 };
 
-/**
- * 向指定的 label 中添加属性
- * @param params
- * @returns
- */
-export const addFieldToLabel = async (
-  driver: Driver,
-  params: IUpdateSchemaParams,
-) => {
-  const { graphName, labelType, labelName, properties } = params;
-
-  let condition = '';
-  properties.forEach((d, index) => {
-    const { name, type, optional = false } = d;
-    const currentType = DATA_TYPE.find(item => item['value'] === type);
-    const isINT = `${type}`.includes('INT');
-
-    const isBOOL = `${type}`.includes('BOOL');
-    const isDOUBLE = `${type}`.includes('DOUBLE');
-    const defaultValue =
-      isINT || isBOOL || isDOUBLE
-        ? currentType?.default
-        : `'${currentType?.default}'`;
-    if (index === properties.length - 1) {
-      condition += `['${name}', ${type}, ${defaultValue}, ${optional}]`;
-    } else {
-      condition += `['${name}', ${type}, ${defaultValue}, ${optional}],`;
-    }
-  });
-
-  const type = labelType === 'node' ? 'vertex' : 'edge';
-
-  const cypher = alterLabelAddFields(type, labelName, condition);
-
-  const result = await request({ driver, cypher, graphName });
-  return responseFormatter(result);
-};
-
-/**
- * 修改 Label 中指定的属性字段
- * @param params
- * @returns
- */
-export const updateFieldToLabel = async (
-  driver: Driver,
-  params: IUpdateSchemaParams,
-) => {
-  const { graphName, labelType, labelName, properties } = params;
-
-  let condition = '';
-  properties.forEach((d, index) => {
-    const { name, type, optional = false } = d;
-    if (index === properties.length - 1) {
-      condition += `['${name}', ${type}, ${optional} ]`;
-    } else {
-      condition += `['${name}', ${type}, ${optional} ],`;
-    }
-  });
-
-  const type = labelType === 'node' ? 'vertex' : 'edge';
-
-  let cypher = alterLabelModFields(type, labelName, condition);
-  const result = await request({ driver, cypher, graphName });
-  return responseFormatter(result);
-};
-
-/**
- * 删除 指定 Label 中的属性字段
- * @param params
- * @returns
- */
-export const deleteLabelField = async (
-  driver: Driver,
-  params: IDeleteSchemaParams,
-) => {
-  const { graphName, labelType, labelName, propertyNames } = params;
-
-  try {
-    const type = labelType === 'node' ? 'vertex' : 'edge';
-    const cypher = alterLabelDelFields(
-      type,
-      labelName,
-      JSON.stringify(propertyNames),
-    );
-
-    const result = await request({ driver, cypher, graphName });
-    return responseFormatter(result);
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 /**
  * 导入 Schema 创建图模型
@@ -477,42 +354,6 @@ export const importSchemaMod = async (
   return result;
 };
 
-/* 创建索引 */
-export const createIndexSchema = async (
-  driver: Driver,
-  params: {
-    propertyName: string;
-    labelName: string;
-    graphName: string;
-    isUnique: boolean;
-  },
-) => {
-  const { graphName, ...last } = params;
-  const result = await createIndex(driver, graphName, last, true);
-  return result;
-};
-
-/**
- * 删除索引
- * @param graphName 子图名称
- * @param params
- * @returns
- */
-export const deleteIndexSchema = async (
-  driver: Driver,
-  params: {
-    propertyName: string;
-    labelName: string;
-    graphName: string;
-  },
-) => {
-  const { labelName, propertyName, graphName } = params;
-
-  const cypher = deleteIndex(labelName, propertyName);
-  const result = await request({ driver, cypher, graphName });
-
-  return responseFormatter(result);
-};
 
 /* 导入Schema数据 */
 const mapCypher = async (

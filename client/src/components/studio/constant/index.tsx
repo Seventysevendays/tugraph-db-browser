@@ -97,22 +97,22 @@ export const TUGRAPH_DEOM = [
     imgUrl:
       'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*ebTkRIJx4SwAAAAAAAAAAAAADgOBAQ/original',
   },
-  // {
-  //   graph_demo_name: 'The Three Body（三体）',
-  //   graph_name: 'TheThreeBody',
-  //   description: '基于刘慈欣的小说《三体》的故事背景示例。',
-  //   path: '/resource/demo_data/TheThreeBody/import.json',
-  //   imgUrl:
-  //     'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*UT-FQZ19zooAAAAAAAAAAAAADgOBAQ/original',
-  // },
-  // {
-  //   graph_demo_name: 'Wandering Earth（流浪地球）',
-  //   graph_name: 'WanderingEarth',
-  //   description: '基于电影《流浪地球1》、《流浪地球2》的剧情设计的示例。',
-  //   path: '/resource/demo_data/WanderingEarth/import.json',
-  //   imgUrl:
-  //     'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*Yn1mSLYzQsgAAAAAAAAAAAAADgOBAQ/original',
-  // },
+  {
+    graph_demo_name: 'The Three Body（三体）',
+    graph_name: generateNameWithHash('TheThreeBody'),
+    description: '基于刘慈欣的小说《三体》的故事背景示例。',
+    path: '/resource/demo_data/TheThreeBody/import.json',
+    imgUrl:
+      'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*UT-FQZ19zooAAAAAAAAAAAAADgOBAQ/original',
+  },
+  {
+    graph_demo_name: 'Wandering Earth（流浪地球）',
+    graph_name: generateNameWithHash('WanderingEarth'),
+    description: '基于电影《流浪地球1》、《流浪地球2》的剧情设计的示例。',
+    path: '/resource/demo_data/WanderingEarth/import.json',
+    imgUrl:
+      'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*Yn1mSLYzQsgAAAAAAAAAAAAADgOBAQ/original',
+  },
 ];
 export const IQUIRE_LIST = [
   { label: '语句查询', key: 'statement' },

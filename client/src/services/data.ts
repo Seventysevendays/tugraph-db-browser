@@ -1,5 +1,3 @@
-import { InitialState } from '@/app';
-import { useModel } from 'umi';
 import { map, join, isString } from 'lodash';
 import {
   createEdgeCypher,
@@ -8,14 +6,16 @@ import {
   updateNodeCypher,
 } from '@/queries/data';
 import { responseFormatter } from '@/utils/schema';
-import { IEdgeDataParams, INodeDataParams } from './interface';
+import { IEdgeDataParams, INodeDataParams } from '@/types/services';
 import { request } from './request';
 import { Driver } from 'neo4j-driver';
 
+/* 加引号 */
 const cypherValueFormatter = (value: any) => {
   return isString(value) ? `'${value}'` : value;
 };
 
+/* 删除边的语句 */
 const edgeMatchConditionFormatter = (params: IEdgeDataParams) => {
   const {
     sourceLabel,

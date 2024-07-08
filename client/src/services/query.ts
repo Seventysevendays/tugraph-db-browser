@@ -4,7 +4,7 @@ import {
   INeighborsParams,
   INodeQueryParams,
   IPathQueryParams,
-} from './interface';
+} from '@/types/services';
 import { QueryResultFormatter, responseFormatter } from '@/utils/schema';
 import {
   generateCypherByConfig,

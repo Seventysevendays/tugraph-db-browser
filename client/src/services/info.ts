@@ -2,7 +2,7 @@ import { Driver } from 'neo4j-driver';
 import { request } from './request';
 
 import { upsertEdge, upsertVertex } from '@/queries/schema';
-import { FileSchema } from './interface';
+import { FileSchema } from '@/types/services';
 import { parseCsv } from '@/components/studio/utils/parseCsv';
 import { convertToNumber } from '@/utils';
 
@@ -12,10 +12,9 @@ const mapUpload = async (params: {
   idx?: number;
   driver: Driver;
   graphName: string;
-  type: string;
   delimiter: string;
 }) => {
-  const { schema, idx = 0, driver, graphName, type, delimiter } = params;
+  const { schema, idx = 0, driver, graphName, delimiter } = params;
   if (schema?.length === 0) {
     return {
       success: true,
@@ -40,13 +39,13 @@ const mapUpload = async (params: {
     ?.map(itemList => {
       let itemVal = {};
       let columns = fileItem.columns;
-      if (type === 'edge') {
+      if (fileItem.type === 'edge') {
         const { SRC_ID, DST_ID } = fileItem;
         columns = fileItem.columns?.map(item => {
           if (item === 'SRC_ID') {
-            return `${SRC_ID}_id`;
+            return `${SRC_ID}_src`;
           } else if (item === 'DST_ID') {
-            return `${DST_ID}_id`;
+            return `${DST_ID}_dst`;
           } else {
             return item;
           }
@@ -60,9 +59,8 @@ const mapUpload = async (params: {
 
       return itemVal;
     });
-console.log(list)
   const cypher =
-    type === 'vertex'
+    fileItem.type === 'vertex'
       ? upsertVertex(fileItem.label)
       : upsertEdge(fileItem.label);
   const param = {
@@ -71,10 +69,10 @@ console.log(list)
     graphName,
     parameters: { data: list },
   };
-  if (type === 'edge') {
+  if (fileItem.type === 'edge') {
     const { SRC_ID, DST_ID } = fileItem;
-    const SRC = { type: SRC_ID, key: `${SRC_ID}_id` };
-    const DST = { type: DST_ID, key: `${DST_ID}_id` };
+    const SRC = { type: SRC_ID, key: `${SRC_ID}_src` };
+    const DST = { type: DST_ID, key: `${DST_ID}_dst` };
     param.parameters = {
       data: list,
       SRC,
@@ -90,7 +88,6 @@ console.log(list)
       idx: idx + 1,
       driver,
       graphName,
-      type,
       delimiter,
     });
   } else {
@@ -106,36 +103,27 @@ export const importData = async (params: {
   delimiter?: string;
 }) => {
   const { driver, graphName, files, delimiter = ',' } = params;
-  const vertexList: FileSchema[] = [];
-  const edgeList: FileSchema[] = [];
+  const dataList: FileSchema[] = [];
 
   files.forEach(item => {
-    if (/edge_/g.test(item.path)) {
-      edgeList.push(item);
-    } else if (/vertex_/g.test(item.path)) {
-      vertexList.push(item);
+    if ('SRC_ID' in item) {
+      dataList.push({
+        ...item,
+        type: 'edge',
+      });
+    } else {
+      dataList.unshift({
+        ...item,
+        type: 'vertex',
+      });
     }
   });
 
   const vertexResult = await mapUpload({
-    schema: vertexList,
+    schema: dataList,
     driver,
     graphName,
-    type: 'vertex',
     delimiter,
   });
-
-  if (!vertexResult?.success || !edgeList.length) {
-    return vertexResult;
-  }
-
-  const edgeResult = await mapUpload({
-    schema: edgeList,
-    driver,
-    graphName,
-    type: 'edge',
-    delimiter,
-  });
-  return edgeResult;
+  return vertexResult;
 };
-

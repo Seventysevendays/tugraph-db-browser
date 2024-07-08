@@ -97,7 +97,7 @@ export const fileListDataMap = ({
 
 export const ImportDataConfig = (prop: ImportDataConfigProps) => {
   const { fileDataList = [], setFileDataList, graphData, isFullView } = prop;
-  const [openKey, setOpenKey] = useState<string[]>([]);
+  const [openKey, setOpenKey] = useState<string[]>(['0']);
 
   const handleDelete = (fileName: string) => {
    
