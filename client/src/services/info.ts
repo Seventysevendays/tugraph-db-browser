@@ -125,7 +125,7 @@ export const importData = async (params: {
     delimiter,
   });
 
-  if (!vertexResult?.success) {
+  if (!vertexResult?.success || !edgeList.length) {
     return vertexResult;
   }
 
@@ -146,8 +146,7 @@ export const checkFile = async (driver: Driver, params: any) => {
 };
 
 export const uploadFile = async (driver: Driver, params: any) => {
-  //   const file = this.ctx.request.files[0];
-  //   const buffer = fs.readFileSync(file.filepath);
+
   const cypher = '';
   const result = await request({ driver, cypher });
   return responseFormatter(result);

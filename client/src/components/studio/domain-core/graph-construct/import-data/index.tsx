@@ -112,6 +112,7 @@ export const ImportData: React.FC<Prop> = ({
         message.error('请先上传文件');
         return;
       }
+     
 
       // 1. 导入数据
       const params = {
@@ -159,6 +160,7 @@ export const ImportData: React.FC<Prop> = ({
           errorMessage={errorMessage}
           setShowResult={setShowResult}
           graphName={graphName}
+          setFileDataList={setFileDataList}
         />
       </SwitchDrawer>
     );

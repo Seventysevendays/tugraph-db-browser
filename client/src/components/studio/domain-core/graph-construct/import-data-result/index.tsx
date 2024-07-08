@@ -5,6 +5,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { PUBLIC_PERFIX_CLASS } from '../../../constant';
 
 import styles from './index.module.less';
+import { FileData } from '@/components/studio/interface/import';
 
 type Prop = {
   status: string;
@@ -12,6 +13,7 @@ type Prop = {
   setShowResult: Dispatch<SetStateAction<boolean>>;
   errorMessage?: string;
   data: any;
+  setFileDataList?: (files: FileData[]) => void;
 };
 
 export const ImportDataResult: React.FC<Prop> = ({
@@ -20,6 +22,7 @@ export const ImportDataResult: React.FC<Prop> = ({
   errorMessage,
   setShowResult,
   data,
+  setFileDataList,
 }) => {
   const titleMap = {
     success: '数据导入成功',
@@ -41,6 +44,7 @@ export const ImportDataResult: React.FC<Prop> = ({
         type="primary"
         key="1"
         onClick={() => {
+          setFileDataList?.([]);
           setShowResult(false);
         }}
       >
@@ -90,6 +94,7 @@ export const ImportDataResult: React.FC<Prop> = ({
       data_error = 0,
       insert = 0,
       update = 0,
+      index_conflict = 0,
     } = data?.[0] || {};
     return (
       <Descriptions column={1}>
@@ -97,6 +102,9 @@ export const ImportDataResult: React.FC<Prop> = ({
         <Descriptions.Item label="数据插入">{insert}条</Descriptions.Item>
         <Descriptions.Item label="数据更新">{update}条</Descriptions.Item>
         <Descriptions.Item label="数据错误">{data_error}条</Descriptions.Item>
+        <Descriptions.Item label="索引冲突">
+          {index_conflict}条
+        </Descriptions.Item>
       </Descriptions>
     );
   };
