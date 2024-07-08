@@ -131,6 +131,5 @@ export const importData = async (params: {
     graphName,
     delimiter,
   });
-
   return vertexResult;
 };
