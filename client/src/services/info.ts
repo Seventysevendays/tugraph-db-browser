@@ -4,6 +4,7 @@ import { request } from './request';
 import { upsertEdge, upsertVertex } from '@/queries/schema';
 import { FileSchema } from './interface';
 import { parseCsv } from '@/components/studio/utils/parseCsv';
+import { convertToNumber } from '@/utils';
 
 /* 创建模版数据导入 */
 const mapUpload = async (params: {
@@ -54,7 +55,7 @@ const mapUpload = async (params: {
 
       columns?.forEach((keys, index) => {
         const itemContent = itemList[index];
-        itemVal[keys] = isNaN(itemContent) ? itemContent : +itemContent;
+        itemVal[keys] = convertToNumber(itemContent);
       });
 
       return itemVal;

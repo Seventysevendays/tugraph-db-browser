@@ -126,3 +126,12 @@ export const convertPermissions = (permissions: Record<string, string>) => {
   });
   return result;
 };
+
+/* 纯数字字符串转number类型 */
+export const convertToNumber = (input: string) => {
+  if(!input){
+    return input
+  }
+  const number = Number(input);
+  return isNaN(number) ? input : number;
+};
