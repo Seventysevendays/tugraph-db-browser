@@ -42,12 +42,13 @@ const mapUpload = async (params: {
       if (fileItem.type === 'edge') {
         const { SRC_ID, DST_ID } = fileItem;
         columns = fileItem.columns?.map(item => {
-          if (item === 'SRC_ID') {
-            return `${SRC_ID}_src`;
-          } else if (item === 'DST_ID') {
-            return `${DST_ID}_dst`;
-          } else {
-            return item;
+          switch (item) {
+            case 'SRC_ID':
+              return `${SRC_ID}_src`;
+            case 'DST_ID':
+              return `${DST_ID}_dst`;
+            default:
+              return item;
           }
         });
       }
@@ -59,6 +60,8 @@ const mapUpload = async (params: {
 
       return itemVal;
     });
+
+   
   const cypher =
     fileItem.type === 'vertex'
       ? upsertVertex(fileItem.label)
@@ -81,7 +84,7 @@ const mapUpload = async (params: {
   }
 
   const result = await request(param);
-
+  
   if (result?.success && idx <= schema.length - 2) {
     return mapUpload({
       schema,
@@ -125,5 +128,6 @@ export const importData = async (params: {
     graphName,
     delimiter,
   });
+
   return vertexResult;
 };

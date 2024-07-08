@@ -1,7 +1,7 @@
 import { ClockCircleFilled } from '@ant-design/icons';
 import { Button, Descriptions, Result } from 'antd';
 import { ResultStatusType } from 'antd/lib/result';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { PUBLIC_PERFIX_CLASS } from '../../../constant';
 
 import styles from './index.module.less';
@@ -11,7 +11,6 @@ type Prop = {
   status: string;
   graphName: string;
   setShowResult: Dispatch<SetStateAction<boolean>>;
-  errorMessage?: string;
   data: any;
   setFileDataList?: (files: FileData[]) => void;
 };
@@ -19,7 +18,6 @@ type Prop = {
 export const ImportDataResult: React.FC<Prop> = ({
   graphName,
   status,
-  errorMessage,
   setShowResult,
   data,
   setFileDataList,
@@ -29,6 +27,13 @@ export const ImportDataResult: React.FC<Prop> = ({
     error: '数据导入失败',
     loading: '数据导入中',
   };
+
+  const handleClick = () => {
+    setFileDataList?.([]);
+    setShowResult(false);
+  };
+
+ 
 
   const extraButtonMap = {
     success: [
@@ -43,19 +48,14 @@ export const ImportDataResult: React.FC<Prop> = ({
       <Button
         type="primary"
         key="1"
-        onClick={() => {
-          setFileDataList?.([]);
-          setShowResult(false);
-        }}
+        onClick={handleClick}
       >
         继续导入
       </Button>,
     ],
     error: [
       <Button
-        onClick={() => {
-          setShowResult(false);
-        }}
+        onClick={handleClick}
         type="primary"
         key="1"
       >
@@ -64,9 +64,7 @@ export const ImportDataResult: React.FC<Prop> = ({
     ],
     loading: [
       <Button
-        onClick={() => {
-          setShowResult(false);
-        }}
+        onClick={handleClick}
         type="primary"
         key="1"
       >
@@ -113,7 +111,6 @@ export const ImportDataResult: React.FC<Prop> = ({
       className={styles[`${PUBLIC_PERFIX_CLASS}-result`]}
       status={status as ResultStatusType}
       title={titleMap[status]}
-      subTitle={errorMessage}
       extra={extraButtonMap[status]}
     >
       {status === 'success' ? renderDes() : null}
