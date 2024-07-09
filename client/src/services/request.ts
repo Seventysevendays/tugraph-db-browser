@@ -32,6 +32,4 @@ export const request = async (params: IRequestParams) => {
     .finally(() => {
       session.close();
     });
- 
-
 };
