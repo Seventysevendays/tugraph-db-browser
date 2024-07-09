@@ -24,7 +24,6 @@ const DataMapConfigHeader = ({
   fileDataList,
   graphData,
 }: any) => {
-
   const getOption = () => {
     return graphData.nodes?.map(item => {
       return {
@@ -238,6 +237,7 @@ const DataMapSelectNav = ({
         ...state?.propertiesOptions,
       ]
     : state?.propertiesOptions;
+
   return (
     <div
       style={{
@@ -277,7 +277,6 @@ const DataMapSelectNav = ({
                     };
                   }
                   return cur;
-
                 });
                 setFileDataList(newFileDataList);
                 setDefaultSelectValue(pre => {

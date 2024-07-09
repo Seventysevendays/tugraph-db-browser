@@ -37,6 +37,7 @@ export const useProcedure = () => {
     loading: CallProcedureLoading,
     error: CallProcedureError,
   } = useRequest(executeProcedure, { manual: true });
+
   const {
     runAsync: onGetProcedureDemo,
     loading: GetProcedureDemoLoading,

@@ -32,6 +32,7 @@ export const fileListDataMap = ({
   setFileDataList: ((files: FileData[]) => void) | undefined;
 }) => {
   return fileDataList.map((data, index) => {
+    console.log(fileDataList,'lkm')
     return (
       <Panel
         forceRender
