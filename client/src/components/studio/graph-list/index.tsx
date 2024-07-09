@@ -54,7 +54,6 @@ export const GraphList = () => {
   }, [isShowStep]);
   const fetchGraphList = () => {
     onGetGraphList().then(res => {
-
       setLocalData('TUGRAPH_SUBGRAPH_LIST', res.data);
       updateState(draft => {
         const defaultList = getDefaultDemoList(
