@@ -179,9 +179,9 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                 }
               >
                 {cardList.map((item, index) => (
-                  <Col key={`col-${item.graph_name}`}>
+                  <Col key={`col-${item.graph_demo_name}`}>
                     <DemoCard
-                      key={item.graph_name}
+                      key={item.graph_demo_name}
                       detail={item}
                       isActive={active === index}
                       onClick={() => {

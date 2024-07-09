@@ -87,11 +87,15 @@ export const StoredProcedureModal: React.FC<Props> = ({
   const { initialState } = useModel('@@initialState');
   const { driver } = initialState as InitialState;
 
+  /** 兼容数据库输入输出不一致，支持映射多种字符 */
   const codeTypeMap = {
     'cpp': 'CPP',
     'py': 'PY',
     'python': 'PY'
   };
+
+  /** 统一计算procedure调用参数 */
+  const paramsValue = tabs.find((item) => item.key === selectItem)?.paramValue ?? `{"scan_edges": true,"times": 2}`;
 
   const onSplitPaneHeightChange = useCallback((size: number) => {
     updateState((draft) => {
@@ -177,7 +181,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
       procedureName: detail.name,
       timeout,
       inProcess: true,
-      param: tabs.find((item) => item.key === selectItem)?.paramValue,
+      param: paramsValue,
       version: detail.version,
     }).then((res) => {
       updateState((draft) => {
@@ -389,9 +393,7 @@ export const StoredProcedureModal: React.FC<Props> = ({
                   >
                     <StoredKhopPanle
                       getParamValue={getParamValue}
-                      value={
-                        tabs.find((item) => item.key === selectItem)?.paramValue
-                      }
+                      value={paramsValue}
                       detail={detail}
                       selectItem={selectItem}
                       getTimeout={getTimeout}
