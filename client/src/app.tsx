@@ -27,7 +27,6 @@ export async function getInitialState() {
     const driver = neo4j.driver(uri, neo4j.auth.basic(userName, password));
     const session = driver.session({
       defaultAccessMode: 'READ',
-      database: 'default',
     });
     console.log('tugraph db auto login success');
     const handleSessionClose = () => {

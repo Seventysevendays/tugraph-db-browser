@@ -41,7 +41,6 @@ export const loginDB = async (params: {
   const driver = neo4j.driver(uri, neo4j.auth.basic(userName, password));
   const session = driver.session({
     defaultAccessMode: 'READ',
-    database: 'default',
   });
   console.log('tugraph db login success');
   const config = await session.run('CALL dbms.config.list()').catch(e => {

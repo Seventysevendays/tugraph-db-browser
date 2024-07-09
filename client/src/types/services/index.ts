@@ -1,3 +1,6 @@
+import { Driver } from 'neo4j-driver';
+
+
 // @ts-nocheck
 
 export interface IVertextParams {
@@ -266,5 +269,18 @@ export interface IVertextParams {
     nodeType: string;
     conditions: Condition[];
     limit: number;
+  }
+
+  /* session params */
+  export interface ISessionParams {
+    database?: string;
+  }
+  
+  /* request params */
+  export interface IRequestParams {
+    driver: Driver;
+    cypher: string;
+    graphName?: string;
+    parameters?: any;
   }
   

@@ -1,23 +1,22 @@
 import { dbRecordsTranslator } from '@/translator';
-import { Driver } from 'neo4j-driver';
+import { IRequestParams, ISessionParams } from '@/types/services';
 
-export const request = async (params: {
-  driver: Driver;
-  cypher: string;
-  graphName?: string;
-  parameters?: any;
-}) => {
-  
-  const { driver, cypher, graphName = 'default', parameters = {}} = params;
+export const request = async (params: IRequestParams) => {
+  const { driver, cypher, graphName, parameters = {} } = params;
   if (!cypher) {
     return {};
   }
-  
-  const session =  driver.session({
-    database: graphName,
-  });
+
+  const sessionParams: ISessionParams = {};
+  if (graphName) {
+    sessionParams.database = graphName;
+  }
+
+  const session = driver.session(sessionParams);
+
+
   return session
-    .run(cypher,parameters)
+    .run(cypher, parameters)
     .then(result => {
       return {
         success: true,
@@ -33,6 +32,4 @@ export const request = async (params: {
     .finally(() => {
       session.close();
     });
- 
-
 };
