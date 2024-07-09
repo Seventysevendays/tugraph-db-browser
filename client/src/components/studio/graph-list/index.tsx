@@ -55,16 +55,18 @@ export const GraphList = () => {
   }, [isShowStep]);
   const fetchGraphList = () => {
     onGetGraphList().then(res => {
-
       setLocalData('TUGRAPH_SUBGRAPH_LIST', res.data);
       updateState(draft => {
         const defaultList = getDefaultDemoList(
           getGraphListTranslator(res.data as SubGraph[]),
         );
         draft.currentList = defaultList;
-        draft.list = [
-          ...defaultList.slice((pagination - 1) * 8, pagination * 8),
-        ];
+        let page = pagination;
+        if (defaultList.length <= (pagination - 1) * 8) {
+          draft.pagination = pagination - 1;
+          page = page - 1;
+        }
+        draft.list = [...defaultList.slice((page - 1) * 8, pagination * 8)];
       });
     });
   };
@@ -166,7 +168,7 @@ export const GraphList = () => {
         onClose={() => {
           updateState(draft => {
             draft.isAdd = false;
-            fetchGraphList()
+            fetchGraphList();
           });
         }}
       />
