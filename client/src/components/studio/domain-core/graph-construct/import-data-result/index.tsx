@@ -1,7 +1,7 @@
 import { ClockCircleFilled } from '@ant-design/icons';
 import { Button, Descriptions, Result } from 'antd';
 import { ResultStatusType } from 'antd/lib/result';
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { PUBLIC_PERFIX_CLASS } from '../../../constant';
 
 import styles from './index.module.less';
@@ -33,8 +33,6 @@ export const ImportDataResult: React.FC<Prop> = ({
     setShowResult(false);
   };
 
- 
-
   const extraButtonMap = {
     success: [
       <Button
@@ -45,29 +43,17 @@ export const ImportDataResult: React.FC<Prop> = ({
       >
         前往图查询
       </Button>,
-      <Button
-        type="primary"
-        key="1"
-        onClick={handleClick}
-      >
+      <Button type="primary" key="1" onClick={handleClick}>
         继续导入
       </Button>,
     ],
     error: [
-      <Button
-        onClick={handleClick}
-        type="primary"
-        key="1"
-      >
+      <Button onClick={handleClick} type="primary" key="1">
         重新导入
       </Button>,
     ],
     loading: [
-      <Button
-        onClick={handleClick}
-        type="primary"
-        key="1"
-      >
+      <Button onClick={handleClick} type="primary" key="1">
         继续导入
       </Button>,
     ],

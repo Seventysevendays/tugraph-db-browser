@@ -1,10 +1,9 @@
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Divider, Dropdown, Menu, Space, Tooltip, message } from 'antd';
+import { Divider, Dropdown, Menu, Space, Tooltip,} from 'antd';
 import { isEmpty } from 'lodash';
 import React from 'react';
 import { useModel } from 'umi';
 import { useImmer } from 'use-immer';
-import { useAuth } from '@/components/studio/hooks/useAuth';
 import { getLocalData, setLocalData } from '../utils/localStorage';
 import EditPasswordModal from './edit-password';
 import {
@@ -19,7 +18,6 @@ import { InitialState } from '@/app';
 
 type Prop = {};
 export const UserCenter: React.FC<Prop> = () => {
-  const { onLogout } = useAuth();
   const { initialState, setInitialState } = useModel('@@initialState');
   const [state, updateState] = useImmer<{ isEditPassword: boolean }>({
     isEditPassword: false,

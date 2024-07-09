@@ -11,7 +11,6 @@ import ProjectCard from '../domain-core/project/project-list/components/project-
 import { getZhPeriod } from '../utils/getZhPeriod';
 import { getLocalData, setLocalData } from '../utils/localStorage';
 
-import { dbRecordsTranslator } from '@/translator';
 import { useGraph } from '../hooks/useGraph';
 import { SubGraph } from '../interface/graph';
 import { getDefaultDemoList } from '../utils/getDefaultDemoList';

@@ -128,9 +128,24 @@ export const convertPermissions = (permissions: Record<string, string>) => {
 
 /* 纯数字字符串转number类型 */
 export const convertToNumber = (input: string) => {
-  if(!input){
-    return input
+  if (!input) {
+    return input;
   }
   const number = Number(input);
-  return isNaN(number) ? input : number;
+  return isNaN(number) ? input : neo4j.int(number);
+};
+
+/* 处理选中点边映射值类型 */
+export const getProperties = (param: {
+  type: string;
+  name: string;
+  graphData: any;
+}) => {
+  const { type, name, graphData } = param;
+
+  if (type === 'node') {
+    return  graphData.nodes?.find(item=>item.labelName === name)?.properties
+  } else {
+    return  graphData.edges?.find(item=>item.labelName === name)?.properties
+  }
 };

@@ -1,6 +1,6 @@
 import { Button, Form, Input, Space, Tooltip, message } from 'antd';
-import { filter, find, isEmpty, join, map } from 'lodash';
-import React, { useCallback, useEffect, useState } from 'react';
+import {  isEmpty, join,  } from 'lodash';
+import React, { useCallback,  useState } from 'react';
 import { useImmer } from 'use-immer';
 import IconFont from '../../../components/icon-font';
 import SwitchDrawer from '../../../components/switch-drawer';
@@ -9,10 +9,8 @@ import { useImport } from '../../../hooks/useImport';
 import { useVisible } from '../../../hooks/useVisible';
 import { FileData } from '../../../interface/import';
 import { GraphData } from '../../../interface/schema';
-import { getLocalData, setLocalData } from '../../../utils';
 import {
   fileSchemaTransform,
-  mergeTaskInfo,
 } from '../../../utils/dataImportTransform';
 import { FileUploader } from '../file-uploader';
 import { ImportDataConfig } from '../import-data-config';
@@ -33,40 +31,8 @@ export const ImportData: React.FC<Prop> = ({
   onSwitch,
 }) => {
   const [form] = Form.useForm();
-  const onImportProgressSuccess = (res: any) => {
-    if (res.errorCode == '200') {
-      if (res?.data?.state === '2') {
-        const taskList = getLocalData('TUGRAPH_INFO');
-        const newTaskInfo = filter(
-          taskList,
-          (info: any) => info.taskId !== taskId,
-        );
-        setLocalData('TUGRAPH_INFO', newTaskInfo);
-        updateState(draft => {
-          draft.resultStatus = 'success';
-          draft.errorMessage = '';
-        });
-      } else if (res?.data?.state === '1') {
-        updateState(draft => {
-          draft.resultStatus = 'loading';
-          draft.errorMessage = '';
-        });
-      } else {
-        updateState(draft => {
-          draft.resultStatus = 'error';
-          draft.errorMessage = res?.data?.reason;
-        });
-      }
-    } else {
-      updateState(draft => {
-        draft.resultStatus = 'error';
-        draft.errorMessage = res.errorMessage || res?.data?.reason;
-      });
-    }
-  };
-  const { onImportData, importDataLoading } = useImport({
-    onImportProgressSuccess,
-  });
+ 
+  const { onImportData, importDataLoading } = useImport();
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
   const [fileDataList, setFileDataList] = useState<FileData[]>([]);
   const [showResult, setShowResult] = useState<boolean>(false);
@@ -122,7 +88,8 @@ export const ImportData: React.FC<Prop> = ({
         delimiter: val?.delimiter, //数据分隔符
       };
 
-
+     console.log(params,'lkm')
+     return
 
       onImportData(params).then(res => {
         if (res?.success) {

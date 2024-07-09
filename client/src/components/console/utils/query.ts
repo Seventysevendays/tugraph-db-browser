@@ -12,11 +12,9 @@ import {
 import { userInfoTranslator, convertPermissions } from '@/utils';
 import {
   IRoleParams,
-  ISubGraphTemplateParams,
   IUserParams,
 } from '../../../../../server/app/service/tugraph/interface';
 import { createGraph } from '@/queries/graph';
-import { FileSchema, Schema } from '@/components/studio/interface/import';
 import { Driver } from 'neo4j-driver';
 import { request } from '@/services/request';
 import { importSchema } from '@/services/schema';

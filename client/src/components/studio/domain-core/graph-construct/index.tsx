@@ -243,7 +243,7 @@ export const GraphConstruct = () => {
     onCreateLabelSchema(params).then(res => {
       if (res.success) {
         message.success('创建成功');
-        window.location.reload();
+        getGraphSchema(currentGraphName)
       } else {
         message.error('创建失败' + res.errorMessage);
       }
@@ -275,7 +275,6 @@ export const GraphConstruct = () => {
         className={styles[`${PUBLIC_PERFIX_CLASS}-step`]}
       >
         <Steps.Step title="模型定义" />
-        {/* 暂时功能隐藏 */}
         <Steps.Step title="数据导入" />
       </Steps>
       <div className={styles[`${PUBLIC_PERFIX_CLASS}-headerRight`]}>
@@ -420,12 +419,11 @@ export const GraphConstruct = () => {
       override,
     }).then(res => {
       if (res.success) {
-        message.success('导入成功').then(() => {
-          getGraphSchema(currentGraphName)
-          setState(draft => {
-            draft.isModelOpen = false;
-            draft.importSchemaLoading = false;
-          });
+        message.success('导入成功')
+        getGraphSchema(currentGraphName)
+        setState(draft => {
+          draft.isModelOpen = false;
+          draft.importSchemaLoading = false;
         });
       } else {
         message.error('导入失败' + res.errorMessage);

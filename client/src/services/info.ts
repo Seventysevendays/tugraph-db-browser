@@ -21,6 +21,7 @@ const mapUpload = async (params: {
     };
   }
   const fileItem = schema[idx];
+  console.log(fileItem)
 
   let csvData: any = [];
   if (fileItem?.file) {

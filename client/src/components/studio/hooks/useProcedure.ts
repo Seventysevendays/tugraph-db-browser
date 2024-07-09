@@ -1,11 +1,6 @@
 import { useRequest } from 'ahooks';
 import {
-  // callProcedure,
-  // deleteProcedure,
-  // getProcedureCode,
   getProcedureDemo,
-  // getProcedureList,
-  // uploadProcedure,
 } from '../services/ProcedureController';
 
 import {
@@ -42,6 +37,7 @@ export const useProcedure = () => {
     loading: CallProcedureLoading,
     error: CallProcedureError,
   } = useRequest(executeProcedure, { manual: true });
+
   const {
     runAsync: onGetProcedureDemo,
     loading: GetProcedureDemoLoading,

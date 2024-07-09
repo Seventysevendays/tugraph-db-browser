@@ -18,9 +18,8 @@ export const mergeFileDataList = (fileList: FileData[], file: FileData) => {
 
 const mapToOption = (item: { labelName?: string }) => {
   if (item?.labelType == 'edge') {
-    const [SRC_ID, DST_ID] = item?.edgeConstraints?.[0];
     return item.labelName
-      ? { value: item.labelName, label: item.labelName, SRC_ID, DST_ID }
+      ? { value: item.labelName, label: item.labelName,  }
       : null;
   } else {
     return item.labelName

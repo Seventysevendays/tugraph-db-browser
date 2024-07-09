@@ -4,14 +4,10 @@ import queryString from 'query-string';
 export function addQueryParam(key: string, value: string) {
   const location = window.location;
   const hashList = location.hash?.split('?');
-  const query = queryString.parse(
-    (hashList?.[1] || '')?.trim()
-  );
+  const query = queryString.parse((hashList?.[1] || '')?.trim());
 
   query[key] = value;
-  console.log(value,query)
-  location.hash = `${hashList[0] }?${queryString.stringify(query)}`
- 
+  location.hash = `${hashList[0]}?${queryString.stringify(query)}`;
 }
 
 export function getQueryParam(key: string) {

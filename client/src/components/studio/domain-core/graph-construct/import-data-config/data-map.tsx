@@ -1,5 +1,7 @@
 import { graphDataToOptions } from '@/components/studio/utils/dataImportTransform';
 import { batchSecureDeletion } from '@/components/studio/utils/objectOper';
+import { getProperties } from '@/utils';
+import { ProFormSlider } from '@ant-design/pro-components';
 import { Select, Cascader, InputNumber, Tooltip, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 const { Paragraph } = Typography;
@@ -20,115 +22,182 @@ const DataMapConfigHeader = ({
   data,
   setFileDataList,
   fileDataList,
+  graphData,
 }: any) => {
+  const getOption = () => {
+    return graphData.nodes?.map(item => {
+      return {
+        label: item?.labelName,
+        value: item?.labelName,
+      };
+    });
+  };
+
+  const onSelect = (val: string,key:string) => {
+    const {primaryField,properties} = graphData.nodes?.find(item=>item.labelName === val) || {}
+    const node = properties?.find(item=>item.name===primaryField)
+    const newFileDataList = {
+      ...fileDataList,
+      fileSchema:{
+        ...fileDataList.fileSchema,
+        [key]:val,
+        properties: [
+          ...fileDataList.fileSchema?.properties,
+          node,
+        ]
+      }
+    }
+    console.log(newFileDataList);
+  };
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 12,
-      }}
-    >
+    <>
       <div
         style={{
           display: 'flex',
-          justifyContent: 'flex-start',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          width: '60%',
+          padding: 12,
         }}
       >
-        <span
+        <div
           style={{
-            width: 'max-content',
-            display: 'inline-block',
-            whiteSpace: 'nowrap',
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            width: '60%',
           }}
         >
-          标签：
-        </span>
-        <Cascader
-          size="small"
-          key="dataMap"
-          placeholder="请选择"
-          defaultValue={data?.selectedValue || []}
-          options={state?.labelOptions}
-          onChange={(value: any, selectedOptions) => {
-            const curColumns = new Array(data?.data?.columns?.length).fill('');
-            const newFileDataList =
-              checkFullArray(fileDataList) &&
-              [...fileDataList].map((cur: any) => {
-                if (data?.fileName === cur?.fileName) {
-                  const preFileSchema = data?.fileSchema;
-                  return {
-                    ...cur,
-                    fileSchema: {
-                      ...preFileSchema,
-                      columns: curColumns,
+          <span
+            style={{
+              width: 'max-content',
+              display: 'inline-block',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            标签：
+          </span>
+          <Cascader
+            size="small"
+            key="dataMap"
+            placeholder="请选择"
+            defaultValue={data?.selectedValue || []}
+            options={state?.labelOptions}
+            onChange={(value: any, selectedOptions) => {
+              const curColumns = new Array(data?.data?.columns?.length).fill(
+                '',
+              );
+              console.log(fileDataList);
+              const newFileDataList =
+                checkFullArray(fileDataList) &&
+                [...fileDataList].map((cur: any) => {
+                  if (data?.fileName === cur?.fileName) {
+                    const preFileSchema = data?.fileSchema;
+                    console.log({
                       ...selectedOptions?.[1],
-                    },
-                    selectedValue:value || ['','']
-                  };
-                }
-                return cur;
+                    });
+                    const properties = getProperties({
+                      type:value[0],
+                      name:value[1],
+                      graphData
+                    }) 
+                    return {
+                      ...cur,
+                      fileSchema: {
+                        ...preFileSchema,
+                        columns: curColumns,
+                        ...selectedOptions?.[1],
+                        properties,
+                      },
+                      selectedValue: value || ['', ''],
+                    };
+                  }
+                  return cur;
+                });
+              console.log(newFileDataList);
+              setFileDataList(newFileDataList);
+              setState((pre: any) => {
+                return { ...pre, nodeType: value || ['', ''] };
               });
-            setFileDataList(newFileDataList);
-            setState((pre: any) => {
-              return { ...pre, nodeType: value || ['','']  };
-            });
-          }}
-        />
-      </div>
-      <div
-        style={{
-          width: '40%',
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-        }}
-      >
-        <span
+            }}
+          />
+        </div>
+        <div
           style={{
-            width: 'max-content',
-            display: 'inline-block',
-            whiteSpace: 'nowrap',
+            width: '40%',
+            display: 'flex',
+            justifyContent: 'space-around',
+            alignItems: 'center',
           }}
         >
-          从第
-        </span>
-        <InputNumber
-          defaultValue={ data?.fileSchema?.header || 0}
-          size="small"
-          onChange={value => {
-            const newFileDataList =
-              checkFullArray(fileDataList) &&
-              [...fileDataList].map((cur: any) => {
-                const { header, ...other } = cur?.fileSchema;
-                if (data?.fileName === cur?.fileName) {
-                  return {
-                    ...data,
-                    fileSchema: {
-                      ...other,
-                      header: Number(value) || 0,
-                    },
-                  };
-                }
-                return cur;
-              });
-            setFileDataList(newFileDataList);
-          }}
-        />
-        <span
+          <span
+            style={{
+              width: 'max-content',
+              display: 'inline-block',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            从第
+          </span>
+          <InputNumber
+            defaultValue={data?.fileSchema?.header || 0}
+            size="small"
+            onChange={value => {
+              const newFileDataList =
+                checkFullArray(fileDataList) &&
+                [...fileDataList].map((cur: any) => {
+                  const { header, ...other } = cur?.fileSchema;
+                  if (data?.fileName === cur?.fileName) {
+                    return {
+                      ...data,
+                      fileSchema: {
+                        ...other,
+                        header: Number(value) || 0,
+                      },
+                    };
+                  }
+                  return cur;
+                });
+              setFileDataList(newFileDataList);
+            }}
+          />
+          <span
+            style={{
+              width: 'max-content',
+              display: 'inline-block',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            行开始
+          </span>
+        </div>
+      </div>
+      {state.nodeType[0] === 'edge' && (
+        <div
           style={{
-            width: 'max-content',
-            display: 'inline-block',
-            whiteSpace: 'nowrap',
+            display: 'flex',
+            justifyContent: 'space-between',
           }}
         >
-          行开始
-        </span>
-      </div>
-    </div>
+          <div>
+            <span style={{ marginRight: 10 }}>起点类型:</span>
+            <Select
+              style={{ width: 100 }}
+              options={getOption()}
+              onChange={(val)=>onSelect(val,'SRC_ID')}
+            />
+          </div>
+          <div>
+            <span style={{ marginRight: 10 }}>终点类型:</span>
+            <Select
+              style={{ width: 100 }}
+              options={getOption()}
+              onChange={(val)=>onSelect(val,'DST_ID')}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 const DataMapSelectNav = ({
@@ -146,8 +215,8 @@ const DataMapSelectNav = ({
     }
   }, [state?.nodeType[0]]);
   useEffect(() => {
-   
-   const defaulColumns =  data?.fileSchema?.columns || new Array(state?.columns?.length).fill('')
+    const defaulColumns =
+      data?.fileSchema?.columns || new Array(state?.columns?.length).fill('');
     setDefaultSelectValue(defaulColumns);
   }, [state?.nodeType[1]]);
 
@@ -162,6 +231,7 @@ const DataMapSelectNav = ({
         ...state?.propertiesOptions,
       ]
     : state?.propertiesOptions;
+
   return (
     <div
       style={{
@@ -181,7 +251,7 @@ const DataMapSelectNav = ({
             <Select
               key={index}
               value={defaultSelectValue[index] || ''}
-              options={[...state?.nodeType][0] ? options: []}
+              options={[...state?.nodeType][0] ? options : []}
               style={{
                 width: 120,
               }}
@@ -189,9 +259,9 @@ const DataMapSelectNav = ({
                 const newFileDataList = [...fileDataList].map(cur => {
                   if (data?.fileName === cur?.fileName) {
                     const curColumns = Array.isArray(cur?.fileSchema?.columns)
-                    ? cur?.fileSchema?.columns
-                    : [];
-                  curColumns[index] = value || '';
+                      ? cur?.fileSchema?.columns
+                      : [];
+                    curColumns[index] = value || '';
                     return {
                       ...cur,
                       fileSchema: {
@@ -201,7 +271,6 @@ const DataMapSelectNav = ({
                     };
                   }
                   return cur;
-
                 });
                 setFileDataList(newFileDataList);
                 setDefaultSelectValue(pre => {
@@ -438,6 +507,7 @@ const DataMap = ({
           };
         },
       );
+
       setState((pre: any) => {
         return {
           ...pre,
@@ -461,6 +531,7 @@ const DataMap = ({
       <DataMapConfigHeader
         data={data}
         state={state}
+        graphData={graphData}
         setState={setState}
         setFileDataList={setFileDataList}
         fileDataList={fileDataList}

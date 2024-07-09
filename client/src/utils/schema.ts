@@ -343,9 +343,7 @@ export const QueryResultFormatter = (
   }
   let resultData = result.data;
 
-  console.log(resultData);
   const responseData = formatMultipleResponse(resultData);
-  console.log(responseData);
 
   const { edges, nodes } = responseData;
 

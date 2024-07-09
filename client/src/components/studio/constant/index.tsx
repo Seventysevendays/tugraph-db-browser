@@ -71,7 +71,7 @@ export const DATA_TYPE = [
   { label: 'STRING', value: 'STRING' },
   { label: 'DATE', value: 'DATE' },
   { label: 'DATETIME', value: 'DATETIME' },
-  { label: 'BLOB', value: 'BLOB' },
+  // { label: 'BLOB', value: 'BLOB' },
   { label: 'BOOL', value: 'BOOL' },
 ];
 export const TUGRAPH_DEOM_NAME = [
@@ -119,7 +119,9 @@ export const IQUIRE_LIST = [
   { label: '路径查询', key: 'path' },
   { label: '点查询', key: 'node' },
 ];
-export const CONNECT_STR_TYPE = ['STRING', 'DATE', 'DATETIME', 'BLOB', 'BOOL'];
+
+// 'BLOB'
+export const CONNECT_STR_TYPE = ['STRING', 'DATE', 'DATETIME', 'BOOL'];
 export const CONNECT = {
   string: [
     { label: '等于', value: '=' },
@@ -144,7 +146,7 @@ export enum PROPERTY_TYPE {
   STRING = 'string',
   DATE = 'string',
   DATETIME = 'string',
-  BLOB = 'string',
+  // BLOB = 'string',
   BOOL = 'boolean',
 }
 export const STORED_OPTIONS = [
