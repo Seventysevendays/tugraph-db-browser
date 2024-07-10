@@ -36,5 +36,6 @@ export const getQueryString = (name: string) => {
   if (match) {
     return decodeURIComponent(match[2]);
   }
+  
   return '';
 };
