@@ -92,8 +92,5 @@
     "mime": "^4.0.1",
     "@types/mime": "^4.0.0"
   },
-  "engines": {
-    "node": "v16.20.0"
-  },
   "repository": "https://github.com/Seventysevendays/tugraph-db-browser.git"
 }
