@@ -1,13 +1,31 @@
-import routes from '@/config/routes';
-import { Col, Row } from 'antd';
+/**
+ * file: container 相关tsx定义
+ * author: Allen
+*/
+
 import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'umi';
+import { Col, Row } from 'antd';
+
+// routers
+import routes from '@/config/routes';
+
+// style
 import './global.less';
 import styles from './index.less';
 
+interface IContainerProps {
+  children?: React.ReactNode;
+  style?: React.CSSProperties;
+}
 
-export const Container = (props: React.ComponentProps<any>) => {
+interface IConsoleContainerProps {
+  sidebar: React.ReactNode;
+  content: React.ReactNode;
+}
 
+
+export const Container: React.FC<IContainerProps> = props => {
   return (
     <div
       className={styles?.umiContainer}
@@ -19,16 +37,19 @@ export const Container = (props: React.ComponentProps<any>) => {
   );
 };
 
-export const ConsoleContainer = (props: React.ComponentProps<any>) => {
+export const ConsoleContainer: React.FC<IConsoleContainerProps>  = props => {
+
+  const { sidebar, content } = props;
+
   return (
     <Row className={styles?.consoleContainer}>
-      <Col span={3}>{props?.children[0] || null}</Col>
-      <Col span={21}>{props?.children[1] || null}</Col>
+      <Col span={3}>{sidebar}</Col>
+      <Col span={21}>{content}</Col>
     </Row>
   );
 };
 
-export const ConsoleContentContainer = (props: React.ComponentProps<any>) => {
+export const ConsoleContentContainer: React.FC<IContainerProps>  = props => {
   return (
     <div className={styles?.consoleContentContainer}>
       {props?.children || null}
