@@ -64,7 +64,6 @@ const mapUpload = async (params: {
       return itemVal;
     });
 
-   console.log(list)
 
   const cypher =
     fileItem.type === 'vertex'
@@ -103,6 +102,7 @@ const mapUpload = async (params: {
 };
 
 /* 导入数据 */
+
 export const importData = async (params: {
   driver: Driver;
   graphName: string;
