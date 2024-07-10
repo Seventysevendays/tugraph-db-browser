@@ -261,7 +261,7 @@ export const createSubGraphFromTemplate = async (
   }
   // TODO files 带上properties
   const newFiles = onAddProperties(schema, files)
-  const importDataResult = await importData({ driver, graphName, newFiles });
+  const importDataResult = await importData({ driver, graphName, files:newFiles });
 
   return importDataResult;
 };
