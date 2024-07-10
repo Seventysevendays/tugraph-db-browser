@@ -33,7 +33,7 @@ export async function getInitialState() {
       setLocalData(TUGRAPH_USER_NAME, null);
       setLocalData(TUGRAPH_PASSWORD, null);
       setLocalData(TUGRAPH_URI, null);
-      session.close();
+      driver.close();
       window.location.hash = '/login';
     };
     let dbConfig: Record<string, any> = {};
@@ -47,7 +47,7 @@ export async function getInitialState() {
       if (retain_connection_credentials === 'false') {
         handleSessionClose();
       } else {
-        setInterval(() => {
+        interval = setInterval(() => {
           const credential_timeout = dbConfig['browser.credential_timeout'];
           const latestLoginTime = getLocalData(TUGRPAH_USER_LOGIN_TIME);
           const isExpired =

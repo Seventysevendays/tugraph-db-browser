@@ -85,8 +85,7 @@ const ProjectCard = ({
   useEffect(()=>{
     nodeEdgeStatistics(graphName)
   },[])
-  const isOfficial =
-    TUGRAPH_DEOM.filter(item => item.graph_name === graphName).length > 0;
+
   return (
     <div className={styles[`${PUBLIC_PERFIX_CLASS}-card-box`]}>
       {index === 0 ? (
@@ -134,28 +133,7 @@ const ProjectCard = ({
                       styles[`${PUBLIC_PERFIX_CLASS}-graph-display-name`]
                     }
                   >
-                    {isOfficial ? (
-                      <div
-                        className={
-                          styles[
-                            `${PUBLIC_PERFIX_CLASS}-graph-display-name-container`
-                          ]
-                        }
-                      >
-                        <div
-                          className={
-                            styles[
-                              `${PUBLIC_PERFIX_CLASS}-graph-display-name-icon`
-                            ]
-                          }
-                        >
-                          官
-                        </div>
-                        <Tooltip title={graphName}>{graphName}</Tooltip>
-                      </div>
-                    ) : (
                       <Tooltip title={graphName}>{graphName}</Tooltip>
-                    )}
                   </div>
                   <div
                     className={
@@ -188,7 +166,7 @@ const ProjectCard = ({
                         />
                       </Tooltip>
                     )}
-                    {!isOfficial && (
+                
                       <Popconfirm
                         placement="top"
                         title={`你确定将子图「${graphName}」永久删除吗？`}
@@ -209,7 +187,7 @@ const ProjectCard = ({
                           />
                         </Tooltip>
                       </Popconfirm>
-                    )}
+                  
                     <Tooltip title="编辑">
                       <IconFont
                         type="icon-bianjimoxing"

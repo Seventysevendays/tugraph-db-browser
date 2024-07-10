@@ -1,26 +1,13 @@
-import { addQueryParam } from '@/components/studio/utils/url';
 import routes from '@/config/routes';
 import { Col, Row } from 'antd';
 import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'umi';
-import { history } from '@/utils/history';
 import './global.less';
 import styles from './index.less';
 
 
 export const Container = (props: React.ComponentProps<any>) => {
-  const location = history.location;
-  useEffect(() => {
-    if (document) {
-      document.addEventListener('click', function (event) {
-        const target: any = event?.target;
-        // addQueryParam('eventSource', target?.tagName);
-      });
-    }
-    return () => {
-      document.removeEventListener('click', () => {});
-    };
-  }, [location, document]);
+
   return (
     <div
       className={styles?.umiContainer}

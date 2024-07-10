@@ -28,7 +28,7 @@ const { Item, useForm } = Form;
 export const Login = () => {
 
   // state
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const {  setInitialState } = useModel('@@initialState');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // props
@@ -76,7 +76,7 @@ export const Login = () => {
   };
 
   /** 判断是否已经登录，若登录则跳转至首页 */
-  if (initialState?.userInfo?.userName) {
+  if (userName) {
     window.location.hash = '/home';
     return;
   }
