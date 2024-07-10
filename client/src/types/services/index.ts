@@ -75,8 +75,8 @@ export interface IVertextParams {
   }
   
   export interface SchemaProperty {
-    name: string;
-    type: string;
+    name?: string;
+    type?: string;
     optional?: boolean;
     unique?: boolean;
     index?: boolean;
@@ -221,8 +221,8 @@ export interface IVertextParams {
   }
   
   export interface ISchemaProperties {
-    name: string;
-    type: string | number | boolean;
+    name?: string;
+    type?: string | number | boolean;
     optional?: boolean;
   }
   

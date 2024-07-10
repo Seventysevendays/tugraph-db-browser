@@ -2,14 +2,14 @@ import { Button, Form, Input, Space, Tooltip, message } from 'antd';
 import { isEmpty, join } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { useImmer } from 'use-immer';
-import IconFont from '../../../components/icon-font';
-import SwitchDrawer from '../../../components/switch-drawer';
-import { PUBLIC_PERFIX_CLASS } from '../../../constant';
-import { useImport } from '../../../hooks/useImport';
-import { useVisible } from '../../../hooks/useVisible';
-import { FileData } from '../../../interface/import';
-import { GraphData } from '../../../interface/schema';
-import { fileSchemaTransform } from '../../../utils/dataImportTransform';
+import IconFont from '@/components/studio/components/icon-font';
+import SwitchDrawer from '@/components/studio/components/switch-drawer';
+import { PUBLIC_PERFIX_CLASS } from '@/components/studio/constant';
+import { useImport } from '@/components/studio/hooks/useImport';
+import { useVisible } from '@/components/studio/hooks/useVisible';
+import { FileData } from '@/components/studio/interface/import';
+import { GraphData } from '@/components/studio/interface/schema';
+import { fileSchemaTransform } from '@/components/studio/utils/dataImportTransform';
 import { FileUploader } from '../file-uploader';
 import { ImportDataConfig } from '../import-data-config';
 import { ImportDataResult } from '../import-data-result';
@@ -62,7 +62,7 @@ export const ImportData: React.FC<Prop> = ({
   const getType = (graph:GraphData, name: string) => {
     const { primaryField, properties } = graph?.nodes?.find(
       itemNode => itemNode?.labelName === name,
-    );
+    ) || {};
     const type = properties?.find(
       itemType => itemType?.name === primaryField,
     );
@@ -70,11 +70,11 @@ export const ImportData: React.FC<Prop> = ({
   };
 
   const onImport = () => {
-    const isLengthNotMatch = fileDataList.every((fileData: any) => {
+    const isLengthNotMatch = fileDataList.every((fileData: FileData) => {
       const {
         selectedValue,
         fileSchema: { columns = [], DST_ID, SRC_ID },
-      } = fileData;
+      } = fileData || {};
       const fileSchemaColumnsLength =
         columns?.filter((item: any) => item).length || 0;
       const AdditionalForm =
@@ -96,7 +96,7 @@ export const ImportData: React.FC<Prop> = ({
       );
       if (item?.selectedValue?.[0] === 'edge') {
         const newProperties = [];
-        const { DST_ID, SRC_ID,properties } = item?.fileSchema;
+        const { DST_ID, SRC_ID,properties } = item?.fileSchema || {};
         if (DST_ID === SRC_ID) {
           // 相等只需要取一个类型
           const type = getType(graphData,DST_ID)

@@ -33,10 +33,8 @@ export const searchFy = <P extends Record<string, unknown>>(params: P): string =
 export const getQueryString = (name: string) => {
   const reg = new RegExp(`(^|&|\\?)${name}=([^(&|#)]*)`, 'i');
   const match = location.href.match(reg);
-  
   if (match) {
     return decodeURIComponent(match[2]);
   }
-  
   return '';
 };

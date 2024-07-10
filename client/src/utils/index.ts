@@ -136,7 +136,7 @@ export const convertToNumber = (input: string,type: string) => {
     return Number(input)
   }
   if(type === 'BOOL'){
-    return input === 'true' ? true : false
+    return input === 'true'
   }
   return input
 
