@@ -238,6 +238,7 @@ export const createSubGraphFromTemplate = async (
   },
 ) => {
   const { graphName, config, path } = params;
+
   const { schema, files } = await fetch(
     `${window.location.origin}${path}`,
   ).then(res => res.json());

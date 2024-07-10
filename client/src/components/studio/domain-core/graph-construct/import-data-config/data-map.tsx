@@ -24,6 +24,7 @@ const DataMapConfigHeader = ({
   fileDataList,
   graphData,
 }: any) => {
+
   const getOption = () => {
     return graphData.nodes?.map(item => {
       return {

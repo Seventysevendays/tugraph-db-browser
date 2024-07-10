@@ -21,7 +21,6 @@ const mapUpload = async (params: {
     };
   }
   const fileItem = schema[idx];
-  console.log(fileItem)
 
   let csvData: any = [];
   if (fileItem?.file) {
@@ -65,6 +64,8 @@ const mapUpload = async (params: {
       return itemVal;
     });
 
+   console.log(list)
+
   const cypher =
     fileItem.type === 'vertex'
       ? upsertVertex(fileItem.label)
@@ -87,7 +88,7 @@ const mapUpload = async (params: {
   }
 
   const result = await request(param);
-  
+
   if (result?.success && idx <= schema.length - 2) {
     return mapUpload({
       schema,
