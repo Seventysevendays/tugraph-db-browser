@@ -206,8 +206,9 @@ export interface IVertextParams {
     header?: number;
     SRC_ID?: string;
     DST_ID?: string;
-    file: any;
+    file?: any;
     type?: string
+    properties?: ISchemaProperties[]
   }
   
   export interface ISubGraphTemplateParams {

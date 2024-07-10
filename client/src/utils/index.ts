@@ -127,12 +127,19 @@ export const convertPermissions = (permissions: Record<string, string>) => {
 };
 
 /* 纯数字字符串转number类型 */
-export const convertToNumber = (input: string) => {
-  if (!input) {
-    return input;
+export const convertToNumber = (input: string,type: string) => {
+  //int类型neo4j.int转下
+  if(['INT8','INT16','INT32','INT64'].includes(type)){
+    return neo4j.int(Number(input))
   }
-  const number = Number(input);
-  return isNaN(number) ? input : neo4j.int(number);
+  if(type === 'DOUBLE'){
+    return Number(input)
+  }
+  if(type === 'BOOL'){
+    return input === 'true' ? true : false
+  }
+  return input
+
 };
 
 /* 处理选中点边映射值类型 */

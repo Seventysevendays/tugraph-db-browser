@@ -21,7 +21,6 @@ const mapUpload = async (params: {
     };
   }
   const fileItem = schema[idx];
-  console.log(fileItem)
 
   let csvData: any = [];
   if (fileItem?.file) {
@@ -40,27 +39,32 @@ const mapUpload = async (params: {
     ?.map(itemList => {
       let itemVal = {};
       let columns = fileItem.columns;
-      if (fileItem.type === 'edge') {
-        const { SRC_ID, DST_ID } = fileItem;
-        columns = fileItem.columns?.map(item => {
-          switch (item) {
-            case 'SRC_ID':
-              return `${SRC_ID}_src`;
-            case 'DST_ID':
-              return `${DST_ID}_dst`;
-            default:
-              return item;
-          }
-        });
-      }
 
       columns?.forEach((keys, index) => {
         const itemContent = itemList[index];
-        itemVal[keys] = convertToNumber(itemContent);
+        const type = fileItem?.properties?.find(
+          itemType => itemType.name === keys,
+        )?.type;
+
+        let newKey = keys;
+
+        switch (keys) {
+          case 'SRC_ID':
+            newKey = `${fileItem.SRC_ID}_src`;
+            break;
+          case 'DST_ID':
+            newKey = `${fileItem.DST_ID}_dst`;
+            break;
+          default:
+            break;
+        }
+        itemVal[newKey] = convertToNumber(itemContent, type);
       });
 
       return itemVal;
     });
+
+   console.log(list)
 
   const cypher =
     fileItem.type === 'vertex'
@@ -84,7 +88,7 @@ const mapUpload = async (params: {
   }
 
   const result = await request(param);
-  
+
   if (result?.success && idx <= schema.length - 2) {
     return mapUpload({
       schema,

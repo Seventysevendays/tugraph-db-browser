@@ -19,6 +19,7 @@ import { Driver } from 'neo4j-driver';
 import { request } from '@/services/request';
 import { importSchema } from '@/services/schema';
 import { importData } from '@/services/info';
+import { FileSchema, Schema } from '@/types/services';
 
 /* 获取用户列表 */
 export const queryUsers = async (
@@ -176,6 +177,57 @@ export const updateRole = async (
   return result[0];
 };
 
+/* 获取对应类型 */
+const getType = (schema: any, name: string) => {
+  const { properties, primary } = schema?.find(
+    itemSchema => itemSchema?.label === name,
+  );
+  const type = properties?.find(itemType => itemType.name === primary);
+  return type || {};
+};
+
+/* 给files数据添加properties 属性类型 */
+const onAddProperties = (schema: Schema[], files: FileSchema[]) => {
+  const newFiles = [...files].map(itemFiles => {
+    //边需要获取节点类型
+    if ('SRC_ID' in itemFiles) {
+      const { SRC_ID, DST_ID } = itemFiles;
+      const newProperties = [
+        ...(schema?.find(itemSchema => itemSchema?.label === itemFiles?.label)
+          ?.properties || []),
+      ];
+
+      // 起点和终点都是一个，类型获取一次
+      if (SRC_ID === DST_ID) {
+        const type = getType(schema, SRC_ID);
+        newProperties.push(
+          { ...type, name: 'SRC_ID' },
+          { ...type, name: 'DST_ID' },
+        );
+      } else {
+        newProperties.push(
+          { ...getType(schema, SRC_ID), name: 'SRC_ID' },
+          { ...getType(schema, DST_ID), name: 'DST_ID' },
+        );
+      }
+      return {
+        ...itemFiles,
+        properties: newProperties,
+      };
+    } else {
+      const properties = schema?.find(
+        itemSchema => itemSchema?.label === itemFiles?.label,
+      )?.properties;
+      return {
+        ...itemFiles,
+        properties,
+      };
+    }
+  });
+
+  return newFiles;
+};
+
 /**
  * 从模版创建子图
  * @param graphName
@@ -190,6 +242,7 @@ export const createSubGraphFromTemplate = async (
   },
 ) => {
   const { graphName, config, path } = params;
+
   const { schema, files } = await fetch(
     `${window.location.origin}${path}`,
   ).then(res => res.json());
@@ -206,8 +259,9 @@ export const createSubGraphFromTemplate = async (
   if (!createAfterResult?.success) {
     return createAfterResult;
   }
-
-  const importDataResult = await importData({ driver, graphName, files });
+  // TODO files 带上properties
+  const newFiles = onAddProperties(schema, files)
+  const importDataResult = await importData({ driver, graphName, newFiles });
 
   return importDataResult;
 };

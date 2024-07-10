@@ -1,6 +1,6 @@
 import { Button, Form, Input, Space, Tooltip, message } from 'antd';
-import {  isEmpty, join,  } from 'lodash';
-import React, { useCallback,  useState } from 'react';
+import { isEmpty, join } from 'lodash';
+import React, { useCallback, useState } from 'react';
 import { useImmer } from 'use-immer';
 import IconFont from '../../../components/icon-font';
 import SwitchDrawer from '../../../components/switch-drawer';
@@ -9,9 +9,7 @@ import { useImport } from '../../../hooks/useImport';
 import { useVisible } from '../../../hooks/useVisible';
 import { FileData } from '../../../interface/import';
 import { GraphData } from '../../../interface/schema';
-import {
-  fileSchemaTransform,
-} from '../../../utils/dataImportTransform';
+import { fileSchemaTransform } from '../../../utils/dataImportTransform';
 import { FileUploader } from '../file-uploader';
 import { ImportDataConfig } from '../import-data-config';
 import { ImportDataResult } from '../import-data-result';
@@ -31,7 +29,7 @@ export const ImportData: React.FC<Prop> = ({
   onSwitch,
 }) => {
   const [form] = Form.useForm();
- 
+
   const { onImportData, importDataLoading } = useImport();
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
   const [fileDataList, setFileDataList] = useState<FileData[]>([]);
@@ -51,26 +49,70 @@ export const ImportData: React.FC<Prop> = ({
     taskId: '',
     resultData: {},
   });
-  const { resultStatus, errorMessage, isFullView, taskId, uploadLoading,resultData } =
-    state;
+  const {
+    resultStatus,
+    errorMessage,
+    isFullView,
+    taskId,
+    uploadLoading,
+    resultData,
+  } = state;
+
+  // 获取点类型
+  const getType = (graph:GraphData, name: string) => {
+    const { primaryField, properties } = graph?.nodes?.find(
+      itemNode => itemNode?.labelName === name,
+    );
+    const type = properties?.find(
+      itemType => itemType?.name === primaryField,
+    );
+    return type || {}
+  };
 
   const onImport = () => {
     const isLengthNotMatch = fileDataList.every((fileData: any) => {
+      const {
+        selectedValue,
+        fileSchema: { columns = [], DST_ID, SRC_ID },
+      } = fileData;
       const fileSchemaColumnsLength =
-        fileData?.fileSchema?.columns?.filter((item: any) => item).length || 0;
+        columns?.filter((item: any) => item).length || 0;
+      const AdditionalForm =
+        selectedValue?.[0] === 'edge' ? !!(DST_ID && SRC_ID) : true;
       return (
         fileSchemaColumnsLength &&
-        fileData?.fileSchema?.columns.every((item: any) => item)
+        columns.every((item: any) => item) &&
+        AdditionalForm
       );
     });
 
     if (!isLengthNotMatch) {
       return message.error(`请完成所有列的映射`);
     }
+   
     fileDataList.forEach((item: any) => {
       item.fileSchema.columns = [...item?.fileSchema?.columns].filter(
         item => item,
       );
+      if (item?.selectedValue?.[0] === 'edge') {
+        const newProperties = [];
+        const { DST_ID, SRC_ID,properties } = item?.fileSchema;
+        if (DST_ID === SRC_ID) {
+          // 相等只需要取一个类型
+          const type = getType(graphData,DST_ID)
+          newProperties.push(
+            { ...type, name: 'SRC_ID' },
+            { ...type, name: 'DST_ID' },
+          );
+        } else {
+          // 不相等取两个类型
+          newProperties.push(
+            { ...getType(graphData,SRC_ID), name: 'SRC_ID' },
+            { ...getType(graphData,DST_ID), name: 'DST_ID' },
+          );
+        }
+        item.fileSchema.properties = newProperties.concat(properties)
+      }
     });
 
     form.validateFields().then(async val => {
@@ -81,15 +123,14 @@ export const ImportData: React.FC<Prop> = ({
      
 
       // 1. 导入数据
-      
+
       const params = {
         graphName, //导入的子图名称
         files: fileSchemaTransform(fileDataList),
         delimiter: val?.delimiter, //数据分隔符
       };
 
-     console.log(params,'lkm')
-     return
+    
 
       onImportData(params).then(res => {
         if (res?.success) {

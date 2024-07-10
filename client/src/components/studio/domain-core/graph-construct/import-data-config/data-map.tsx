@@ -24,6 +24,7 @@ const DataMapConfigHeader = ({
   fileDataList,
   graphData,
 }: any) => {
+
   const getOption = () => {
     return graphData.nodes?.map(item => {
       return {
@@ -33,21 +34,24 @@ const DataMapConfigHeader = ({
     });
   };
 
-  const onSelect = (val: string,key:string) => {
-    const {primaryField,properties} = graphData.nodes?.find(item=>item.labelName === val) || {}
-    const node = properties?.find(item=>item.name===primaryField)
-    const newFileDataList = {
-      ...fileDataList,
-      fileSchema:{
-        ...fileDataList.fileSchema,
-        [key]:val,
-        properties: [
-          ...fileDataList.fileSchema?.properties,
-          node,
-        ]
-      }
-    }
-    console.log(newFileDataList);
+  // 起点和终点类型选择
+  const onSelect = (val: string, key: string) => {
+    const newFileDataList =
+      checkFullArray(fileDataList) &&
+      [...fileDataList].map((cur: any) => {
+        if (data?.fileName === cur?.fileName) {
+          const fileSchema = cur?.fileSchema;
+          return {
+            ...cur,
+            fileSchema: {
+              ...fileSchema,
+              [key]: val,
+            },
+          };
+        }
+        return cur;
+      });
+    setFileDataList(newFileDataList);
   };
 
   return (
@@ -81,26 +85,27 @@ const DataMapConfigHeader = ({
             size="small"
             key="dataMap"
             placeholder="请选择"
+            allowClear={false}
             defaultValue={data?.selectedValue || []}
             options={state?.labelOptions}
             onChange={(value: any, selectedOptions) => {
               const curColumns = new Array(data?.data?.columns?.length).fill(
                 '',
               );
-              console.log(fileDataList);
               const newFileDataList =
                 checkFullArray(fileDataList) &&
                 [...fileDataList].map((cur: any) => {
                   if (data?.fileName === cur?.fileName) {
                     const preFileSchema = data?.fileSchema;
-                    console.log({
-                      ...selectedOptions?.[1],
-                    });
+
+                    delete preFileSchema.SRC_ID;
+                    delete preFileSchema.DST_ID;
+                
                     const properties = getProperties({
-                      type:value[0],
-                      name:value[1],
-                      graphData
-                    }) 
+                      type: value[0],
+                      name: value[1],
+                      graphData,
+                    });
                     return {
                       ...cur,
                       fileSchema: {
@@ -114,7 +119,6 @@ const DataMapConfigHeader = ({
                   }
                   return cur;
                 });
-              console.log(newFileDataList);
               setFileDataList(newFileDataList);
               setState((pre: any) => {
                 return { ...pre, nodeType: value || ['', ''] };
@@ -177,22 +181,25 @@ const DataMapConfigHeader = ({
           style={{
             display: 'flex',
             justifyContent: 'space-between',
+            padding: 12
           }}
         >
           <div>
             <span style={{ marginRight: 10 }}>起点类型:</span>
             <Select
+              value={data?.fileSchema?.SRC_ID}
               style={{ width: 100 }}
               options={getOption()}
-              onChange={(val)=>onSelect(val,'SRC_ID')}
+              onChange={val => onSelect(val, 'SRC_ID')}
             />
           </div>
           <div>
             <span style={{ marginRight: 10 }}>终点类型:</span>
             <Select
+            value={data?.fileSchema?.DST_ID}
               style={{ width: 100 }}
               options={getOption()}
-              onChange={(val)=>onSelect(val,'DST_ID')}
+              onChange={val => onSelect(val, 'DST_ID')}
             />
           </div>
         </div>
