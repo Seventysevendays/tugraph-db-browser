@@ -24,6 +24,7 @@ import { generateNameWithHash } from '@/utils/common';
 import styles from './index.module.less';
 
 
+
 type Props = { open: boolean; onClose: () => void };
 const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
   const {
@@ -112,15 +113,16 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                 onCreateGraph({
                   graphName,
                   config: { description, maxSizeGB },
-                }).then(res => {
-                  if (res.success) {
-                    message.success('新建成功');
-                    onGetGraphList();
-                    form.resetFields();
-                    onClose();
-                  } else {
-                    message.error('创建失败' + res?.errorMessage);
-                  }
+                })
+                  .then((res) => {
+                    if(res?.success){
+                      message.success('新建成功');
+                      onGetGraphList();
+                      form.resetFields();
+                      onClose();
+                    } else {
+                      message.error('创建失败' + res?.errorMessage);
+                    }
                 });
               } else {
                 onCreateDemoGraph({

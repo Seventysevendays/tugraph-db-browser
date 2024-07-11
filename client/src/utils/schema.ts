@@ -4,7 +4,7 @@ import {
   IVertextSchemaParams,
   IEdgeSchemaParams,
   RestFulResponse,
-} from '../services/interface';
+} from '@/types/services';
 
 import { has, isEmpty } from 'lodash';
 /**
