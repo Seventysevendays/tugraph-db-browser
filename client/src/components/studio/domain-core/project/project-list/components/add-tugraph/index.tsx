@@ -22,6 +22,7 @@ import EditForm from '../edit-form';
 import { generateNameWithHash } from '@/utils/common';
 
 import styles from './index.module.less';
+import { dbRecordsTranslator } from '@/translator';
 
 
 type Props = { open: boolean; onClose: () => void };
@@ -69,7 +70,8 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
       imgUrl:
         'https://mdn.alipayobjects.com/huamei_qcdryc/afts/img/A*iLrCTZt0lAcAAAAAAAAAAAAADgOBAQ/original',
     },
-    ...TUGRAPH_DEOM,
+    //TODO暂时功能隐藏
+    // ...TUGRAPH_DEOM,
   ];
 
   const footer =
@@ -112,15 +114,16 @@ const AddTuGraphModal: React.FC<Props> = ({ open, onClose }) => {
                 onCreateGraph({
                   graphName,
                   config: { description, maxSizeGB },
-                }).then(res => {
-                  if (res.success) {
-                    message.success('新建成功');
-                    onGetGraphList();
-                    form.resetFields();
-                    onClose();
-                  } else {
-                    message.error('创建失败' + res?.errorMessage);
-                  }
+                })
+                  .then((res) => {
+                    if(res?.success){
+                      message.success('新建成功');
+                      onGetGraphList();
+                      form.resetFields();
+                      onClose();
+                    } else {
+                      message.error('创建失败' + res?.errorMessage);
+                    }
                 });
               } else {
                 onCreateDemoGraph({
