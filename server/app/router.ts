@@ -41,10 +41,10 @@ export default (app: Application) => {
   // TuGraph subGraph
   // router.get('/api/subgraph', controller.tugraph.subgraph.getSubGraphList);
   // router.post('/api/subgraph', controller.tugraph.subgraph.createSubGraph);
-  router.post(
-    '/api/subgraph/template',
-    controller.tugraph.subgraph.createSubGraphFromTemplate,
-  );
+  // router.post(
+  //   '/api/subgraph/template',
+  //   controller.tugraph.subgraph.createSubGraphFromTemplate,
+  // );
   // router.put('/api/subgraph', controller.tugraph.subgraph.updateSubGraph);
   // router.delete('/api/subgraph', controller.tugraph.subgraph.deleteSubGraph);
   // router.get(
@@ -61,22 +61,22 @@ export default (app: Application) => {
   // );
 
   // 点边类型数量 TODO没有调用
-  router.get(
-    '/api/statistics/:graphName/labels',
-    controller.tugraph.schema.getVertexEdgeSchemaCount,
-  );
-  // 点边数量详情 TODO没调用
-  router.get(
-    '/api/countDetail/:graphName',
-    controller.tugraph.schema.getCountDetail,
-  );
-  // 点边数量大概 TODO 没调用
-  router.get('/api/count/:graphName', controller.tugraph.schema.getCount);
-  // 点边数量 TODO没调用
-  router.get(
-    '/api/statistics/:graphName/count',
-    controller.tugraph.schema.getVertexEdgeCount,
-  );
+  // router.get(
+  //   '/api/statistics/:graphName/labels',
+  //   controller.tugraph.schema.getVertexEdgeSchemaCount,
+  // );
+  // // 点边数量详情 TODO没调用
+  // router.get(
+  //   '/api/countDetail/:graphName',
+  //   controller.tugraph.schema.getCountDetail,
+  // );
+  // // 点边数量大概 TODO 没调用
+  // router.get('/api/count/:graphName', controller.tugraph.schema.getCount);
+  // // 点边数量 TODO没调用
+  // router.get(
+  //   '/api/statistics/:graphName/count',
+  //   controller.tugraph.schema.getVertexEdgeCount,
+  // );
 
   // router.get('/api/schema/:graphName', controller.tugraph.schema.getSchema);
   // router.post('/api/schema/:graphName', controller.tugraph.schema.createSchema);
@@ -86,10 +86,10 @@ export default (app: Application) => {
   // );
 
   // 查询指定点边类型的Schema TODO没用到
-  router.get(
-    '/api/schema/:graphName/:labelType/:labelName',
-    controller.tugraph.schema.getSchemaByType,
-  );
+  // router.get(
+  //   '/api/schema/:graphName/:labelType/:labelName',
+  //   controller.tugraph.schema.getSchemaByType,
+  // );
 
   // 指定点边的 Schema 修改
   // router.post(
@@ -106,7 +106,7 @@ export default (app: Application) => {
   // );
 
   // schema 导入
-  router.post('/api/import/schema', controller.tugraph.schema.importSchema);
+  // router.post('/api/import/schema', controller.tugraph.schema.importSchema);
 
   // 索引相关
   // router.post('/api/index/:graphName', controller.tugraph.schema.createIndex);
@@ -120,12 +120,12 @@ export default (app: Application) => {
   // router.post(
   //   '/api/query/language',
   //   controller.tugraph.query.queryByGraphLanguage,
-  // ); 
+  // );
   // router.post('/api/query/path', controller.tugraph.query.queryByPath);
   // router.post('/api/query/node', controller.tugraph.query.queryByNode);
   //TODO 没调用
   // router.post('/api/query/config', controller.tugraph.query.queryByConfig);
-    //TODO 没调用
+  //TODO 没调用
   // router.post('/api/query/neighbors', controller.tugraph.query.queryNeighbors);
 
   // 数据相关
@@ -162,7 +162,7 @@ export default (app: Application) => {
   );
   router.post('/api/import_progress', controller.tugraph.info.importProgress);
   router.post('/api/import_data', controller.tugraph.info.importData);
-  router.post('/api/import_schema', controller.tugraph.info.importSchema);
+  // router.post('/api/import_schema', controller.tugraph.info.importSchema);
   router.post('/api/upload_files', controller.tugraph.info.uploadFile);
-  router.post('/api/check_file', controller.tugraph.info.checkFile);
+  // router.post('/api/check_file', controller.tugraph.info.checkFile);
 };

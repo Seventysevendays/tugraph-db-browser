@@ -9,12 +9,6 @@ import {
 
 import {  map, isEmpty } from 'lodash';
 
-
-
-
-
-
-
 export const conditionToCypher = (conditions: Condition[]) => {
   return map(conditions, (cond: Condition) => {
     const { property, value, operator } = cond;
