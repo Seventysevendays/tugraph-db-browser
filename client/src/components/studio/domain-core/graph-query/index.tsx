@@ -227,7 +227,6 @@ export const GraphQuery = () => {
     queryParams: string,
   ) => {
     if (activeTab === IQUIRE_LIST[0].key) {
-
       onStatementQuery({
         graphName: currentGraphName,
         script: editorRef?.current?.codeEditor?.getValue() || script,
