@@ -158,7 +158,9 @@ export const GraphQuery = () => {
   ];
   useEffect(() => {
     updateState(draft => {
-      if (isEmpty(getLocalData('TUGRAPH_STATEMENT_LISTS')?.[currentGraphName])) {
+      if (
+        isEmpty(getLocalData('TUGRAPH_STATEMENT_LISTS')?.[currentGraphName])
+      ) {
         draft.queryList = [
           {
             id: `${new Date().getTime()}`,
@@ -225,7 +227,6 @@ export const GraphQuery = () => {
     queryParams: string,
   ) => {
     if (activeTab === IQUIRE_LIST[0].key) {
-
       onStatementQuery({
         graphName: currentGraphName,
         script: editorRef?.current?.codeEditor?.getValue() || script,
@@ -309,8 +310,7 @@ export const GraphQuery = () => {
             }}
           />
         </Tooltip>
-        {/* TODO 暂时隐藏功能 */}
-        {/* <Popover
+        <Popover
           title="存储过程"
           placement="bottomRight"
           className="popoverTitle"
@@ -348,7 +348,7 @@ export const GraphQuery = () => {
               });
             }}
           />
-        </Popover> */}
+        </Popover>
         <Button
           onClick={() => {
             location.hash = `/construct?graphName=${currentGraphName}`;

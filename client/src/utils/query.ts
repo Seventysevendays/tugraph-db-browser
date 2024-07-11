@@ -4,10 +4,8 @@ import {
   Condition,
   INodeQueryParams,
   IPathQueryParams,
-  IPropertiesParams,
-  ISubGraphParams,
   IConfigQueryParams,
-} from '@/services/interface';
+} from '@/types/services';
 
 import {  map, isEmpty } from 'lodash';
 

@@ -8,7 +8,7 @@
             ],
             "format": "CSV",
             "label": "角色",
-            "path": "/resource/demo_data/WanderingEarth/角色.csv"
+            "path": "/resource/demo_data/WanderingEarth/roles.csv"
         },
         {
             "columns": [
@@ -17,7 +17,7 @@
             ],
             "format": "CSV",
             "label": "组织",
-            "path": "/resource/demo_data/WanderingEarth/组织.csv"
+            "path": "/resource/demo_data/WanderingEarth/organizations.csv"
         },
         {
             "columns": [
@@ -26,7 +26,7 @@
             ],
             "format": "CSV",
             "label": "天体与设施",
-            "path": "/resource/demo_data/WanderingEarth/天体与设施.csv"
+            "path": "/resource/demo_data/WanderingEarth/celestialFsacilities.csv"
         },
         {
             "DST_ID": "角色",
@@ -38,7 +38,7 @@
             ],
             "format": "CSV",
             "label": "关系",
-            "path": "/resource/demo_data/WanderingEarth/关系_角色_角色.csv"
+            "path": "/resource/demo_data/WanderingEarth/relationship_role_role.csv"
         },
         {
             "DST_ID": "组织",
@@ -50,7 +50,7 @@
             ],
             "format": "CSV",
             "label": "关系",
-            "path": "/resource/demo_data/WanderingEarth/关系_角色_组织.csv"
+            "path": "/resource/demo_data/WanderingEarth/relationship_role_organization.csv"
         },
         {
             "DST_ID": "天体与设施",
@@ -62,7 +62,7 @@
             ],
             "format": "CSV",
             "label": "关系",
-            "path": "/resource/demo_data/WanderingEarth/关系_角色_天体与设施.csv"
+            "path": "/resource/demo_data/WanderingEarth/relationship_role_celestialFacility.csv"
         },
         {
             "DST_ID": "角色",
@@ -92,7 +92,7 @@
             ],
             "format": "CSV",
             "label": "事件关系",
-            "path": "/resource/demo_data/WanderingEarth/事件_角色_组织.csv"
+            "path": "/resource/demo_data/WanderingEarth/event_role_organization.csv"
         },
         {
             "DST_ID": "天体与设施",
@@ -107,7 +107,7 @@
             ],
             "format": "CSV",
             "label": "事件关系",
-            "path": "/resource/demo_data/WanderingEarth/事件_角色_天体与设施.csv"
+            "path": "/resource/demo_data/WanderingEarth/event_role_celestialFacility.csv"
         },
         {
             "DST_ID": "角色",
@@ -122,7 +122,7 @@
             ],
             "format": "CSV",
             "label": "事件关系",
-            "path": "/resource/demo_data/WanderingEarth/事件_组织_角色.csv"
+            "path": "/resource/demo_data/WanderingEarth/event_organization_role.csv"
         },
         {
             "DST_ID": "天体与设施",
@@ -137,7 +137,7 @@
             ],
             "format": "CSV",
             "label": "事件关系",
-            "path": "/resource/demo_data/WanderingEarth/事件_组织_天体与设施.csv"
+            "path": "/resource/demo_data/WanderingEarth/event_organization_celestialFacilities.csv"
         },
         {
             "DST_ID": "天体与设施",
@@ -152,7 +152,7 @@
             ],
             "format": "CSV",
             "label": "事件关系",
-            "path": "/resource/demo_data/WanderingEarth/事件_天体与设施_天体与设施.csv"
+            "path": "/resource/demo_data/WanderingEarth/event_celestialFacilities.csv"
         }
     ],
     "schema": [
