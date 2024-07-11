@@ -50,7 +50,7 @@ const ProjectCard = ({
   });
   const { nodeEdgeObjList, isNodeEdgeObj,isConstruct } = state;
   const getActions = (text: string, status: boolean, href: string) => (
-    <Tooltip title={!status && '请先图构建'}>
+    <Tooltip title={!status && '功能暂未开放'}>
       <span
         onClick={() => {
           if (status) {

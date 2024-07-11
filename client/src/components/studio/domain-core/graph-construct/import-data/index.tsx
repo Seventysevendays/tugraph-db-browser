@@ -29,10 +29,6 @@ export const ImportData: React.FC<Prop> = ({
   onSwitch,
 }) => {
   const [form] = Form.useForm();
-<<<<<<< HEAD
-=======
-
->>>>>>> abd0cba (chore: remove node server (#11))
   const { onImportData, importDataLoading } = useImport();
   const { visible, onShow, onClose } = useVisible({ defaultVisible: true });
   const [fileDataList, setFileDataList] = useState<FileData[]>([]);
